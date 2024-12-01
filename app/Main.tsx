@@ -11,14 +11,166 @@ export default function Home({ posts }) {
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Testing 123
+          {/* <div className="flex flex-col py-4 gap-10 text-xl"> 
+          </div> */}
+
+          {/* <h1 className="text-3xl font-extrabold leading-9 tracking-tight from-lime-500 to-blue-400  sm:text-4xl sm:leading-10 md:text-7xl md:leading-14">
+            Hi, 你好!
+          </h1> */}
+
+          <h1 className="text-7xl font-bold bg-gradient-to-r from-lime-300 to-blue-700 text-transparent bg-clip-text">
+            Hello, 你好!
           </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {siteMetadata.description}
+
+          <div className="flex flex-col py-4 gap-10 text-xl"> 
+          </div>
+          
+          <div className="flex flex-col py-1.5 gap-10 text-xl"> 
+
+
+          <p>
+           My name is <strong><span className = 'text-2xl text-orange-200'>Zirou Qiu</span></strong>. 
+           
+           I am a Ph.D. student in <strong><span className = 'text-xl'>C</span></strong>omputer <strong><span className = 'text-xl'>S</span></strong>cience at the <a className = 'no-underline hover:underline decoration-yellow-200' href = 'https://engineering.virginia.edu/department/computer-science'>University of Virginia</a> working with <a className = 'no-underline hover:underline decoration-yellow-200' href = 'https://scholar.google.com/citations?user=diIore8AAAAJ&hl=en'>Madhav Marathe</a>.
           </p>
+
+          {/* <p>
+            I am also a research assistant at the <a className = 'no-underline hover:underline text-blue-200' href = 'https://biocomplexity.virginia.edu/'>Biocomplexity Institute</a>.
+          </p> */}
+
+          <p>
+            I study the foundations of large-scale <span className = 'text-orange-200'><strong> complex systems </strong></span>(e.g., social systems, multi-agent systems and multi-sided markets) using <span className = 'text-orange-200'><strong>machine learning</strong></span>, <span className = 'text-orange-200'><strong>optimization</strong></span>, and <span className = 'text-orange-200'><strong>computational modeling</strong></span>.
+          </p>
+
+          <p>
+            I develop formal <strong>frameworks</strong> and <strong>algorithms</strong> to simulate, learn and optimize these large systems, aiming to <span className = 'select-text'>improve system performance</span>, understand system behaviors, and benefit the social good.
+          </p>
+
+          </div>
+
+          <div className="flex flex-col py-4 gap-10 text-xl"> 
+          </div>
+
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-red-300 to-blue-700 text-transparent bg-clip-text">
+            Research Interests
+          </h1>
+
+          <ul className="list-disc list-inside text-lg">
+            <li>Optimization</li>
+            <li>Machine Learning</li>
+            <li>Computational Social Science & Epidemiology</li>
+            <li>Game Theory</li>
+            <li>Mathematical Programming</li>
+          </ul>
+
+          <div className="flex flex-col py-4 gap-10 text-xl"> 
+          </div>
+
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-red-300 to-blue-700 text-transparent bg-clip-text">
+            Select Papers
+          </h1>
+
+          <ul className="space-y-4">
+          <li className="rounded-md shadow-sm">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-blue-200">
+                <a href="https://zirouq.me/assets/Spatial_resources.pdf" target='_blank' className="hover:underline">
+                  [1] Welfare Optimization for Resource Allocation with Peer Effects
+                </a>
+              </h3>
+              <span className = 'text-yellow-100'>
+                <strong>In Submission</strong>
+              </span>
+            </div>
+            <p className="pt-2 text-sm">
+              <strong>Zirou Qiu</strong>, Daniel J. Rosenkrantz, Matthew O. Jackson, Simon A. Levin, S. S. Ravi, Richard Stearns, Madhav Marathe
+            </p>
+          </li>
+            
+          
+          <li className="rounded-md shadow-sm pt-2">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-blue-200">
+                <a href="https://arxiv.org/pdf/2405.06884" target='_blank' className="hover:underline">
+                  [2] Efficient PAC Learnability of Dynamical Systems Over Multilayer Networks
+                </a>
+              </h3>
+              <span className = 'text-yellow-100'>
+                <strong>ICML-24</strong>
+              </span>
+            </div>
+            <p className="pt-2 text-sm">
+              <strong>Zirou Qiu</strong>, Abhijin Adiga, Madhav Marathe, S.S. Ravi, Daniel Rosenkrantz, Richard Stearns and Anil Vullikanti
+            </p>
+          </li>
+
+          <li className="rounded-md shadow-sm pt-2">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-blue-200">
+                <a href="https://arxiv.org/pdf/2301.02876" target='_blank' className="hover:underline">
+                  [3] Assigning Agents to Increase Network-Based Neighborhood Diversity
+                </a>
+              </h3>
+              <span className = 'text-yellow-100'>
+                <strong>AAMAS-23</strong>
+              </span>
+            </div>
+            <p className="pt-2 text-sm">
+              <strong>Zirou Qiu</strong>, Andrew Yuan, Chen Chen, Madhav Marathe, S.S. Ravi, Daniel Rosenkrantz, Richard Stearns and Anil Vullikanti.
+            </p>
+          </li>
+
+          <li className="rounded-md shadow-sm pt-2">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-blue-200">
+                <a href="https://arxiv.org/pdf/2301.02889" target='_blank' className="hover:underline">
+                  [4] Networked Anti-Coordination Games Meet Graphical Dynamical Systems: Equilibria and Convergence
+                </a>
+              </h3>
+              <span className = 'text-yellow-100'>
+                <strong>AAAI-23</strong>
+              </span>
+            </div>
+            <p className="pt-2 text-sm">
+              <strong>Zirou Qiu</strong>, Chen Chen, Madhav Marathe, S.S. Ravi, Daniel Rosenkrantz, Richard Stearns, Anil Vullikanti
+            </p>
+          </li>
+
+          
+          <li className="rounded-md shadow-sm pt-2">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-blue-200">
+                <a href="https://www.pnas.org/doi/abs/10.1073/pnas.2123355119" target='_blank' className="hover:underline">
+                  [5] Understanding the Coevolution of Mask Wearing and Epidemics: A Network Perspective
+                </a>
+              </h3>
+              <span className = 'text-yellow-100'>
+                <strong>PNAS-22</strong>
+              </span>
+            </div>
+            <p className="pt-2 text-sm">
+              <strong>Zirou Qiu</strong>, Baltazar Espinoza, Vítor V. Vasconcelos, Chen Chen, Sara M. Constantino, Stefani A. Crabtree, Luojun Yang, Anil Vullikanti, Jiangzhuo Chen, Jörgen Weibull, Kaushik Basu, Avinash Dixit, Simon Levin, Madhav Marathe
+            </p>
+          </li>
+        </ul>
+
+
+
+          {/* <ul className="space-y-4">
+            <li className="rounded-md shadow-sm">
+              <h3 className="text-lg font-semibold">
+                <a href="#" className="hover:underline">
+                  Welfare Optimization for Resource Allocation with Peer Effects
+                </a>
+              </h3>
+              <p className="text-sm">
+                Zirou Qiu, Daniel J. Rosenkrantz, Matthew O. Jackson, Simon A.Levin, S. S. Ravi, Richard Stearns, Madhav Marathe • Published in: <em>Journal of Optimization</em>, 2023
+              </p>
+            </li>
+          </ul> */}
+
         </div>
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+        {/* <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
             const { slug, date, title, summary, tags } = post
@@ -68,8 +220,9 @@ export default function Home({ posts }) {
               </li>
             )
           })}
-        </ul>
+        </ul> */}
       </div>
+
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
           <Link
@@ -81,11 +234,11 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
-      {siteMetadata.newsletter?.provider && (
+      {/* {siteMetadata.newsletter?.provider && (
         <div className="flex items-center justify-center pt-4">
           <NewsletterForm />
         </div>
-      )}
+      )} */}
     </>
   )
 }

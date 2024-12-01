@@ -25,7 +25,8 @@ module.exports = {
         sans: ['var(--font-space-grotesk)', ...fontFamily.sans],
       },
       colors: {
-        primary: colors.pink,
+        // customBackground: '#1a202c', // Replace with your desired color code
+        primary: colors.blue,
         gray: colors.gray,
       },
       zIndex: {
