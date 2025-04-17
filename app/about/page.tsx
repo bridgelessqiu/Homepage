@@ -18,7 +18,7 @@ export default function Page() {
             Days
           </h1>
 
-          <div>
+          <div className="container py-12">
              Upcoming...
           </div>
          
