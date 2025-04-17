@@ -1,0 +1,81 @@
+---
+title: 'Milgrom - Chapter One'
+date: 2025-01-16
+lastmod: '2025-01-16'
+tags: ['Talks', 'Econ', 'Auction Design']
+draft: false
+summary: 'Notes on the first chapter of Putting Auction Theory to Work.'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+## Overview of Mechanism Design
+
+**Mechanism**: the control of the designer. 
+
+> A mechanism consists of rules that govern what the participants are permitted to do and how these permitted actions determine outcomes.
+
+**Environment**: the world beyond the designer's control. 
+1. A list of participants.
+2. A list of possible outcomes.
+3. A list of participants' types (private information such as preferences and beliefs).
+
+> The most commonly studied mechanisms in economics are resource allocation mechanisms.
+
+1. The outcome is an allocation of resources.
+
+> Mechanism theory evaluates alternative designs based on their comparative performance. Formally, performance is the function that maps environments into outcomes.
+
+> The goal of mechanism design analysis is to determine what performance is possible and how mechanisms can best be designed to achieve the designer’s goals.
+
+> An auction is a mechanism to allocate resources among a group of bidders.
+
+<mark>Pages 35 - 39 contain so much good information. Need to read over and over. </mark>
+
+## Formal Definitions
+
+### An environment 
+
+A tuple $(N, \Omega, \Theta)$, where
+
+1. $N = \{1, ..., n\}$ is the set of (potential) **participants**. If the mechanism designer itself is also included, we have $N = \{0,...,n\}$. 
+
+2. $\Omega$ is the set of possible **outcomes**. 
+
+3. $\Theta$ is the set of all possible **type** profiles that the modeler considers, where each $\vec{t} = \{t^1, ..., t^n\} \in \Theta$ is a vector of types; $t^i$ is the type for the $i$th participant, $i \in N$.
+
+**The utility.** Given a type profile $\vec{t} \in \Theta$ and an outcome $\xi \in \Omega$, a participant $i$ receives a payoff: $u^i : \Theta \times \Omega \rightarrow \mathbb{R}$. In general, $i$'s utility depends on the types of other players, though as pointed out by Milgrom, in many case the utility only depends on a player's own type.
+
+**Uncertainty about other's type.** Designer often assumes that participants do not know the exact types of others, specified by a conditional probability distribution $\pi^i(\vec{t} | t^i)$ for each player $i$. Such distributions are often assumes to come from a common prior $\pi$. This assumption is known as the **Harsanyi doctrine**. 
+
+### A mechanism (strategic form) 
+
+A pair $(\mathcal{S}, \omega)$, where
+
+1. $\mathcal{S}$ is the set of all possible **strategy profiles** of the participants.
+
+2. $\omega : \mathcal{S} \rightarrow \Omega$ is a function that maps profiles to outcomes. 
+
+Given a mechanism and a realization $\vec{t}$ of types, one can define a **game** of the form $(N, S, U(\cdot | \vec{t}))$, where
+
+1. $N$ is the set of players (participants) from the environment.
+
+2. $\mathcal{S}$ is the set of strategy profiles from the mechanism. 
+
+3. $\vec{t}$ is a type vector from the environment.
+
+4. $U(\cdot | \vec{t})$ is a **payoff** function. 
+
+This payoff function $U(\cdot | \vec{t})$ takes an action profile as the argument, where 
+
+$$
+U^i(P, \vec{t}) = u^i(\omega(\sigma), \vec{t})
+$$
+
+Here, $u^i(\cdot, \cdot)$ is the utility function from the environment, $\sigma \in \mathcal{S}$ is a particular action profile, and $\omega(\cdot)$ maps this profile to an outcome in $\Omega$. As of writing this note, I don't understand the necessity of this additional function $U^i$. So far, it seems to be equivalent to the definition of $u^i$.
+
+<mark> As of writing this note, I don't understand the definition of a performance function:</mark>
+
+> Given a mechanism $(\mathcal{S}, \omega)$, if the game theoretic solution concept forecasts that a particular strategy profile $\sigma$ will be played, then one can use that forecast to predict and evaluate the performance of the mechanism. The forecasted outcome will be $\xi(\vec{t}) = \omega(\sigma)$. The function $\xi(\cdot)$ mapping type profiles to outcomes is the performance function corresponding to the mechanism. 
+
+Does it mean that an action profile $\sigma$ can be entirely determined by a given type vector $\vec{t}$, which then tells us what outcome to expect from $\omega$? 

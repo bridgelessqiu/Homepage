@@ -1,0 +1,117 @@
+---
+title: 'Notes on Ads Auctions at Meta'
+date: 2024-12-9
+lastmod: '2024-12-9'
+tags: ['Note', 'Econ']
+draft: false
+summary: 'How ads auctions works.'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+**Disclaimer**: These are notes I took while reading publicly available sites from Meta and YouTube videos. 
+
+
+> The ad auction is where your ads compete with other ads trying to reach the same audience. Ads succeed based on their **bids**, **budget** and how **relevant** the ad is to its audience
+
+**Ads are displayed on Meta technologies (i.e., Facebook, Messenger, Instagram or Meta Audience Network)**.
+
+**<mark>Ads Manager</mark>: [link](https://www.facebook.com/business/tools/ads-manager)**. 
+
+
+## Budgets
+
+A budget ([link](https://www.facebook.com/business/m/small-business/advertiser-success-center/budget)) upper bounds the total amount one wants to spend on promoting its ads. 
+
+Two types of budgets an advertiser can choose from ([link](https://www.facebook.com/business/help/458847204894307?id=629338044106215)):
+
+1. <u>Campaign budgets</u>: The budget for the entire ad campaign (consists of multiple ad sets). 
+    
+    This budget is automatically distributed (in real time) to ad sets, using Meta Advantage.
+
+    > This budget has flexibility to spend more on ad sets with the best opportunities, and less on underperforming ad sets. 
+
+2. <u>Ad set budgets</u>:  The budget for an individual ad set, chosen manually by an advertiser.
+
+For both types of budgets, an advertiser can decide if the budget applies to each day or the entire duration:
+
+1. <u>Lifetime budgets</u>: A hard upper bound on the total amount spent over an ad’s entire duration. The daily spending will be flexible, controlled by Meta ([Link](https://www.facebook.com/business/help/1844835042445690?id=629338044106215)).
+
+    > To get the best results for your budget, we may spend more on days when better opportunities are available, and less on days with fewer opportunities.
+
+2. <u>Daily budgets</u>: An **expected** upper bound on the daily amount, averaged over an ad’s duration ([link](https://www.facebook.com/business/help/190490051321426?id=629338044106215)).
+
+
+<p align="center">
+<img src="../../static/images/budget.png" width="450" height="450" />
+<em>An example of a daily budget of 20.</em>
+</p>
+
+
+## Auctions and bidding
+[Link 1](https://www.facebook.com/business/m/small-business/advertiser-success-center/auction?content_id=YAvwvDmp3OKQagl&ref=sem_smb&utm_term=dsa-1968837123741&gclid=Cj0KCQiAx9q6BhCDARIsACwUxu52QEGX-3FDtmHAXT96SZn70dfSYpfadbLnCeB6CL4NXagwdA0nobYaAiBGEALw_wcB&gad_source=1); [Link 2](https://www.facebook.com/business/help/430291176997542?id=561906377587030); [Link 3](https://www.facebook.com/business/m/one-sheeters/facebook-bid-strategy-guide); [Link 4](https://www.facebook.com/business/help/1619591734742116?id=2196356200683573)
+
+> Each time there's an opportunity to show an ad to someone, an auction takes place to determine which ad to show to that person.
+
+#### Audiences and goals
+
+An advertiser can specify [target audiences](https://www.facebook.com/business/help/168922287067163?id=176276233019487) when creating an ad. When there is an opportunity to show an ad to a user, ads with the right target audience are eligible for the auction.
+
+An advertiser can also specify a **performance goal** when creating an ad set. Based on the performance goal, different bidding strategies will be used by Meta. Such goals include maximizing:
+
+1. Number of landing page views 
+
+2. Number of link clicks
+
+3. Daily unique reach
+
+4. Number of conversions 
+
+5. Number of impressions
+
+#### Winners
+The ad with the highest **[total value](https://www.facebook.com/business/help/430291176997542?id=561906377587030)** (bid, estimated action prob., and ad quality) wins. 
+
+#### Bidding strategies
+
+Meta does **auto-bidding** (even if a bid cap can be set by an advertiser). There are five (as of 12/15/2024) bidding strategies: 
+
+1. [Highest volume](https://www.facebook.com/business/help/721453268045071?id=2196356200683573): Meta's auto-bidder aims to spend the entire (allocated) budget and get the most results (e.g., num of conversions). 
+
+2. [Highest value](https://www.facebook.com/business/help/168777633739990?id=2196356200683573): Spend the entire budget to maximize the [the value of conversions](https://www.facebook.com/business/help/296463804090290) (i.e., revenue for an advertiser).
+
+3. [Cost per result goal](https://www.facebook.com/business/help/272336376749096?id=2196356200683573): An advertiser sets an expected value of cost per action (CPA), then auto-bidders try to maximize the goal while keeping the averaged spending not too far from this expected value. 
+
+4. [Return on ad spend](https://www.facebook.com/business/help/1113453135474912) (ROAS): An advertiser can set a target purchase-to-budget ratio (i.e., the return). Auto-bidders then try to beat this ratio within the budget. 
+
+For all the strategies given above, an auto-bidder tries to achieves the goal dynamically without capping the maximum amount that can be spent in a single auction (of course, this amount cannot be more than the daily budget). 
+
+5. [Bid cap](https://www.facebook.com/business/help/272503946776144?id=2196356200683573): An advertiser sets a hard upper bound on the maximum bid for any single auction. An auto-bidding then dynamically bids to maximize the goal, while not exceeding this cap. 
+
+
+**Note**: Based on the performance goal chosen, only a subset of bidding strategies are feasible. The best practice is to create a campaign using Meta [Ads Manager](https://www.facebook.com/business/tools/ads-manager) and see different options. 
+
+**Examples**:
+<p align="center">
+<img src="../../static/images/bid-1.png" width="450" height="450" />
+</p>
+<p align="center">
+<img src="../../static/images/bid-4.png" width="450" height="450" />
+<em>When the goal is to maximize number of conversions, we can use either highest volume or bid cap.</em>
+</p>
+
+<p align="center">
+<img src="../../static/images/bid-2.png" width="450" height="450" />
+<em>When the goal is to maximize number of impressions, we can use either highest volume or bid cap.</em>
+</p>
+
+<p align="center">
+<img src="../../static/images/bid-5.png" width="450" height="450" />
+</p>
+<p align="center">
+<img src="../../static/images/bid-6.png" width="450" height="450" />
+<em>When the goal is to maximize number of link clicks, we can use either highest volume or cost-per-goal.</em>
+</p>
+
+## Summary 
+> You control your overall amount spent through your budget. You control your cost per result through your bid strategy. 

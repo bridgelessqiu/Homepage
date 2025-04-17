@@ -1,0 +1,33 @@
+---
+title: 'Raj - 2024 : Lecture 1 & 2'
+date: 2024-12-22
+lastmod: '2024-12-22'
+tags: ['Raj-24', 'Lecture-Note', 'Deep-Learning']
+draft: false
+summary: 'Deep Learning - Lecture 1 & 2'
+layout: PostSimple
+bibliography: references-data.bib
+---
+ 
+[Lecture 1](https://www.youtube.com/watch?v=1Nl-gDEmic0&list=PLp-0K3kfddPwpm8SuB262r4owIkS7NNJj&index=2&t=3s&ab_channel=CarnegieMellonUniversityDeepLearning), [Lecture 2](https://www.youtube.com/watch?v=HHQU7bmVDds&list=PLp-0K3kfddPwpm8SuB262r4owIkS7NNJj&index=3&ab_channel=CarnegieMellonUniversityDeepLearning)
+
+
+**Threshold activation function**: 
+
+$$
+\begin{gather*}
+\sigma_{T, a, b}(z) = 
+\begin{cases}
+  a \;\; \text{ if } z \geq T \\
+  b \;\; \text{ otherwise } 
+\end{cases}
+\end{gather*}
+$$
+
+> For any decision boundary (for classification problems), one can construct an MLP with threshold activation functions that captures it with arbitrary precision.
+
+> For any continuous functions with any number of inputs (over the real), there exists an MLP (with threshold activation functions) that models this function up to any precision.
+
+1. The depth and width need to be sufficiently large.
+
+2. Depth can be traded off from *exponential* growth of the width of the network.

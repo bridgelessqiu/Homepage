@@ -1,0 +1,337 @@
+---
+title: 'Notes on Pacing Equilibrium in First Price Auction Markets [Conitzer-et-al-19]'
+date: 2025-02-17
+lastmod: '2025-02-17'
+tags: ['Paper-Note', 'Econ', 'Game-Theory']
+draft: false
+summary: 'Conitzer, V., Kroer, C., Panigrahi, D., Schrijvers, O., Stier-Moses, N. E., Sodomka, E., & Wilkens, C. A. Pacing equilibrium in first price auction markets. EC 2019'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Paper link](https://arxiv.org/abs/1811.07166).
+
+### Background 
+The context is **budget management** (from the perspective of auctioneers) in online ads auction. There are two mainstream approaches, *bidder selection* and *budget-pacing*. This paper considers the latter. 
+
+Throughout this discussion, keep in mind that we are dealing with <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>proxy bidders</span>. That is, they are auto-bidders ''controlled'' by ads auctioneers. Thus, auctioneers get to choose the bid amount for each bidder in each auction, under the budget constraints. From a high level, the problem is to choose the right bid amount for all bidders so that $(i)$ some metrics are maximized and $(ii)$ budgets are drained as much as possible. 
+
+
+### Problem setting
+
+1. A set $N = \{1, ..., n\}$ of auto-bidders.
+
+2. A set $M = \{1, ..., m\}$ divisible items.
+
+    Clearly, a single impression is not divisible. Here, each item can be considered as a collection of impressions from the same category (e.g., user-type). A fractional assignment of an item $j$ then corresponds to receiving a proportion of this pool of impressions under category $j$. Auction over $M$ can be think as an ad campaign. 
+
+3. Each bidder $i \in N$ has
+
+    a. A **valuation** $v_{ij} \geq 0$ for item $j$.
+
+    b. A **budget** $B_i > 0$.
+
+    The valuations and budgets are static, and <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>assumed to be known</span> to the auctioneer.
+    
+    c. Further, to ensure that the spending (defined below) over $M$ is within the budget for each bidder, a **pacing multiplier** $\alpha_i \in [0, 1]$ is chosen for each bidder $i$ **by the auctioneer**. This vector of pacing multipliers is a set of variables that the auctioneer gets to play with. 
+
+4. Each item is sold through an **independent first-price auction**. Under ties, an item is allocated fractionally among the winners. Note that, an auctioneer gets to decide how the allocation happens (i.e., who gets what fraction). 
+
+    a. For each item $j$, each bidder submit one bid. The bid by $i$ for item $j$ is $\alpha _i v_{ij}$. The fraction (could be $0$) of item $j$ allocated to $i$ is denoted by $x_{ij} \in [0, 1]$. 
+
+    b. The **payment** of bidder $i$ for item $j$ is $p_j x_{ij}$, where $p_j$ is the highest bidding amount for item $j$, as in the first-price auction. The total payment of $i$ is summed over all items, which should be at most $i$'s budget. 
+
+<div style={{ border: "1px solid white", padding: "10px", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)", textAlign: "center"}}>
+#### Problem goal - Attempt 1
+Find a vector of pacing multipliers so no bidder spends over budget.
+</div>
+
+Based on this goal, the authors introduce the notion of budget-feasible first price pacing multipliers (BFPM)
+
+### Budget-feasible first price pacing multipliers (BFPM)
+
+This is defined at an ad campaign level (i.e., all auctions over $M$). An instance of BFPM is a tuple $(\alpha, x)$ where
+
+1. **First-price**: For each item $j$, $p_j = \max_{i \in N} \{\alpha_i v_{ij}\}$. 
+
+2. **Winner**: For each $i$ and $j$, if $x_{ij} > 0$, then $\alpha_i v_{ij} = p_j$.
+
+    The converse might not hold. That is, a winner can get $0$ fraction of an item. 
+
+3. **Budget**: For each $i$, $\sum_{j \in M} p_j x_{i,j} \leq B_i$
+
+4. **Clearing**: For each $j$, $\sum_{i \in N} x_{ij} \leq 1$, and if $p_j > 0$, then $\sum_{i \in N} x_{ij} = 1$;
+
+A BFPM encodes a vector of multipliers that also satisfies the budget constraint. However, such a BFPM can be easily obtained by overly pacing every bidder: setting the multiplier to $0$ where the budget constraint trivially holds. Apart from triviality, in such an overly pacing setting, auctioneers makes less money as and bidders do not utilize their full budget.  
+
+<div style={{ border: "1px solid white", padding: "10px", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)", textAlign: "center"}}>
+#### Problem goal
+Find a vector of pacing multipliers so $(i)$ no bidder spends over budget, and more Importantly, $(ii)$ the spending of each bidder should be as close to the budget as possible (in a maximal sense). 
+</div>
+
+With this new goal, the authors introduce the formalism of first price pacing equilibrium (FPPE) which refines BFPM.
+
+### First price pacing equilibrium (FPPE) 
+
+An FPPE is a BFPM $(\alpha, x)$ with an additional property:
+
+$$
+\text{If } \sum_{j \in M} p_j x_{ij} < B_i, \text{ then } \alpha_i = 1
+$$
+
+#### Remarks
+1. The notion of *equilibria* here means no bidders are **unnecessarily paced**. That is, we are interested in solutions where, for each bidder, the pacing multiplier is maximally high: any increase of the pacing multiplier (if it is less than $1$) would lead to spending over the budget. 
+
+2. Pacing multiplier should always be at most one, since no bidder wants to bid higher than its valuation.
+
+## FPPE exists and it is Pareto-dominant
+
+Start from a simple observation.
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Observation 1.** Given a BFPM $(\alpha, x)$, consider a new $(\alpha', x')$ (not necessarily a BFPM) constructed as follows:
+
+1. Increase the pacing multipliers of a subset $N' \subset N$ of bidders.
+
+2. The multipliers of the bidders in $N \setminus N'$ remains unchanged.
+
+3. The new allocation $x'$ is computed by the first-price mechanism, and further:
+  
+    a. The allocations to any bidders in $N \setminus N'$ (for any auction) does not increase from $x$ to $x'$. 
+
+    For instance, suppose for an item $j$, there are two winners under $(\alpha, x)$: $i_1$ and $i_2$, both in $N \setminus N'$, with allocations $1/3$ and $2/3$ respectively. Suppose under $\alpha'$, a new winner $i_3$ emerged whose bid amount is the same as those of $i_1$ and $i_2$ (clearly, if $i_3$'s bid amount is strictly higher, than she is the sole winner, and thus $i_1$ and $i_2$ gets no allocations and the condition **a.** satisfied trivially). What conditions **a.** implies is that, under the new allocation $x'$, $x'_{i_1 j} \leq 1/3$ and $x'_{i_2 j} \leq 2/3$. 
+
+Then, the budget constraints for bidders in $N \setminus N'$ remain satisfied in $(\alpha', x')$.
+</div>
+
+The above observation follows from the first-price mechanism. By the observation above, the Lemma follows:
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Lemma 1.** Given two BFPM $(\alpha, x)$ and $(\alpha', x')$, if $\alpha'$ strictly dominates $\alpha$, then $(\alpha, x)$ is not an FPPE.
+</div>
+
+#### Remarks
+
+1. We now know that, if an FPPE exists, the following must hold:
+
+    a. It must be unique w.r.t. the multipliers (the distribution of items can vary). 
+
+    b. It must be Pareto-dominant w.r.t. the multipliers.
+
+What left to shown is that, $(i)$ a pareto-dominant BFPM indeed exists, and $(ii)$ if it does exist, it is also an FPPE.
+
+### Pareto dominance
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Lemma 2.** There exists a Pareto-dominant BFPM $(\alpha, x)$ where $\alpha \geq \alpha'$ for any BFPM $(\alpha', x')$.
+</div>
+
+The inequality $\geq$ holds element-wise.
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+
+Overall, we show the convergence of a Pareto-improvement process. Consider any BFPM $(\alpha, x)$. Suppose $(\alpha, x)$ is not pareto-dominant, and let $(\alpha', x')$ be another BFPM such that $\alpha'[i] > \alpha[i]$ for a non-empty subset $i \in N' \subseteq N$. Define $\bar{N} \subseteq N$ as the subset of bidders for whom $\alpha'[i] < \alpha[i]$. 
+
+
+If $\bar{N} = \emptyset$, then $\alpha'$ strictly improves upon $\alpha$ for at least one bidder without reducing the allocation for any other. In this case, the Pareto-improvement process continues from $(\alpha', x')$.
+
+If $\bar{N} \neq \emptyset$, consider a new profile $\hat{\alpha}$ where 
+
+1. $\hat{\alpha}[i] = \alpha'[i]$ for $i \in N'$
+
+2. $\hat{\alpha}[i] = \alpha[i]$ for $i \notin N'$
+
+This new vector $\hat{\alpha}$ of multipliers inherits the best from both worlds. It is not hard to see that  $\hat{\alpha}$ strictly dominant both $\alpha$ and $\alpha'$. Further, one can (easily) verify that, there exists an allocation $\hat{x}$ s.t. $(\hat{\alpha}, \hat{x})$ is a BFPM. As a result, $(\hat{\alpha}, \hat{x})$ dominates both $(\alpha', x')$ and $(\alpha, x)$. The improvement process continues on $(\hat{\alpha}, \hat{x})$.
+
+Since all multipliers are upper bounded by $1$, this improvement process converges. The Lemma follows. <span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+#### Remarks.
+
+1. This is an existence proof, doesn't show that the convergence time is polynomial.
+
+2. In authors' original proof, they stated that ''for any $\epsilon > 0$ and any $i$, there exists a BFPM where $\alpha_i > \alpha^*_i - \epsilon$''. As of writing this note, this statement is not immediately clear to me. 
+
+### FPPE is Pareto-dominant
+
+One can show that a Pareto-dominant BFPM $(\alpha, x)$ is an FPPE. The intuition is that, suppose there exists a bidder $i$ that is unnecessarily paced (i.e., $\alpha_i <1$ and the budget constraint is not binding), then one can reallocate the items such that, in the new allocation, $i$ receives more shares of items, whereas other players receives less shares (which lead to spending less then the budget). Following this, one can further increases the multipliers of bidders such that their budget constraints remain satisfied, resulting in a new BFPM that strictly dominates $(\alpha, x)$.
+
+We break down the proof into several parts. Here, we say that a bidder $i$ is **tied** for an item if in the corresponding auction, there are at least two winners with $i$ being one of them. Start from several key observations.
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Observation 2.** Given a Pareto-dominant BFPM $(\alpha, x)$, every unnecessarily paced bidder is tied for at least one item.
+</div>
+
+This holds because, for an unnecessarily paced bidder $i$ that is not tied in any auction (i.e., being the sole winner or not winning), one can increase $\alpha_i$ by a sufficiently small amount and its budget constraint is still satisfied. Further, by Observation 1, the budget constraints of all other bidders remain satisfied, resulting a new BFPM that dominants $(\alpha, x)$; a contradiction. 
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Observation 3.** Let $(\alpha, x)$ be any BFPM. For any fixed $\epsilon > 0$, one can construct a new profile $(\alpha', x')$  such that:
+
+1. $\alpha'$ dominants $\alpha$.
+
+2. $x' = x$. 
+
+3. The set of winners in each auction remain unchanged.
+
+4. The increase in payment from $(\alpha, x)$ to $(\alpha', x')$ for each bidder is at most $\epsilon$.
+</div>
+
+Note that, the resulting $(\alpha', x')$ is not necessarily a BFPM.
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+
+Let $N' \subseteq N$ be a non-empty maximal subset of winners satisfying the property: for each bidder $i \in N'$, every bidder that is tied with $i$ in at least one auction is also in $N'$. Let $M' \subseteq M$ be the corresponding set of auctions. Note that one can select any "anchor" bidder $i \in N'$ and any "anchor" item $j \in M'$ that $i$ wins, such that the increase of payment in auction $j$ for $i$ is $\Delta_i x_{ij}v_{ij}$, $\Delta_i = \alpha[i]' - \alpha[i]$. More importantly, based on $\Delta_i x_{ij}v_{ij}$, one can derive the corresponding change in the multiplier for every other bidders in $N'$ such that the condition $3$ in the observation is satisfied. 
+
+Let $(i^*, j^*) = \argmax_{i \in N', j \in M'} x_{ij} v_{ij}$. Choose the value of $\Delta_{i^*}$ such that $\Delta_i^* x_{i^*j^*}v_{i^*j^*} \leq \epsilon / m$, where $m$ is the total number of items. One can then verify that, using $i^*$ and $j^*$ as anchors, the resulting the increase in total payment for each bidder in $(\alpha', x')$ is at most $\epsilon$. <span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+#### Remarks
+
+1. In the original paper, the author didn't explicitly establish the above result. Though, my guess is that their argument for existence uses an observation that is similar to the one presented above.
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Lemma 3.** The Pareto-dominant BFPM $(\alpha, x)$ is an FPPE.
+</div>
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+By Observation 2, let $i$ be an unnecessarily paced bidder that is tied for at least one item. One can consider a graph of bidders under $(\alpha, x)$ where two bidders are adjacent if and only if the are tied for at least one items. Let $T$ be the subset of all bidders in this graph that are in the same connected component as $i$. 
+
+One can iteratively redistribute the items to construct a new profile $(\alpha, x')$ such that the budget constraints for all bidders in $T$ are non-binding under $x'$ (this algorithm is too tedious do describe precisely.) The overall idea is that, start from $i$, give more shares to $i$ for each tied item and less shares to other tied winners. Then proceed the same process for these tied winners of $i$, but only considering auctions that has not been redistributed in previous rounds of this iterative process. By carefully controlling the redistribution amount for each bidder in each auction, one can ensure that the budget is not met for all bidders in $T$. Let $\hat{b}$ be the minimum different between the payment and the budget over all bidders in $T$. By Observation $2$, one can set $\epsilon = \hat{b}/2$ can construct a new profile $(\alpha', x')$ such that $\alpha'$ dominants $\alpha$ and the increase in payment for each player in $T$ is at most $\hat{b}/2$. This implies that $(\alpha', x')$ is a BFPM that dominates $(\alpha, x)$, a contradiction. <span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+#### Remarks
+
+1. We now know that, FPPE must exist, it is unique, and it is Pareto-dominant.
+
+2. It is not hard to see that, given two BFPM $(\alpha, x)$ and $(\alpha', x')$, if $\alpha' \geq \alpha$, then the **revenue** incurred by $(\alpha', x')$ is at least the revenue incurred by $(\alpha, x)$. 
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Corollary 1.** The FPPE is revenue-maximizing among all BFPM.
+</div>
+
+### Other properties of FPPE
+
+#### The per-dollar return
+
+Under an FPPE, one can show that the per-dollar return for each bidder $i$ is exact $1/\alpha_i$, **regardless of the tie break allocations of the items**.
+
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Lemma 4.** The utility of each bidder $i$ is $(1/\alpha_i - 1) B_i$ in an FPPE $(\alpha, x)$.
+</div>
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+Given an FPPE $(\alpha, x)$, the utility $u_i$ of each budget-constrained (i.e., the entire budget is used) bidder $i$ is as follows:
+$$
+\begin{align*}
+u_i(\alpha, x) &= \sum_{j \in M} (v_{ij} - p_j) \cdot x_{ij} \\
+&= \sum_{j \in M} v_{ij} x_{ij} - B_i \\
+&= \sum_{j \in M_i} \frac{1}{\alpha_i}  p_{j} \cdot x_{ij} - B_i\\
+&= (\frac{1}{\alpha_i} - 1) \cdot B_i
+\end{align*}
+$$
+
+Here, $M_i$ is the subset of items that $i$ wins. For a bidder who is not budget-constrained, note that her utility is always $0$ since $\alpha_i = 1$ in this case, and  the price of a winning item is always the same as her valuation. <span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+In the paper, the authors define a new variable $\beta_i = 1/\alpha_i$, indicates the **per-dollar return** for a bidder $i$. 
+
+#### Utility maximizing
+
+One can also verify that a FPPE is utility-maximizing for each player. 
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Lemma 5.** An FPPE $(\alpha, x)$ is utility-maximizing over all possible allocations.
+</div>
+
+Here, $\alpha$ is fixed, as a result, the prices of items are fixed which are the highest bidding amounts.
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+Recall that under a FPPE $(\alpha, x)$ (or BFPM in general), the price $p_j$ of an item $j$ equals to the highest bidding amount.  
+
+Let $i \in N$ be any bidder. In Lemma 4, we have shown that any allocations under the first-price auction mechanism (i.e., if $x_{ij} > 0$, then $i$'s bid amount for $j$ is the highest) results in the same overall utility of $i$: $0$ if $i$ is not budget-constrained and $(1/\alpha_i - 1) \cdot B_i$ otherwise. To complete the proof, we then consider ways to allocation items that do not follow the first-price mechanism. 
+
+Let $x'_i \in [0, 1]^m$ be any allocation such that $x'_{ij} > 0$ but $p_j$ is larger than $i$'s bid amount for some item $j$. That is, $i$ receives (and pays for) items that she didn't win. One can show that $i$ is always worse off compared to the allocation $x_i$ in $(\alpha, x)$ due to a lower per-dollar value. Proceed with the proof. Suppose $i$ is not budget-constrained, then its bid amount for each item is exactly its valuation. Thus, $i$'s utility under $x_i$ becomes negative which is worse than the zero utility under $(\alpha, x)$. 
+
+Suppose $i$ is budget constrained, let $j$ be an item that $i$ is assigned but not winning. One can verify that the per-dollar return of $i$ for this item $j$ is less than $(1 / \alpha_i - 1) p_j x_{ij}$ since $p_j > \alpha_i v_{ij}$. As a result, the overall utility $i$ receives is less that $({1}/{\alpha_i} - 1) \cdot B_i$.
+<span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+
+#### Equal-rates competitive equilibrium
+
+The authors introduce the notation of an equal-rates competitive equilibrium (ERCE) as follows:
+
+1. A pair $(p, x)$ where $p_j$ is the price of item $j$, and $x_{ij}$ is the allocation of item $j$ to bidder $i$.
+
+2. For all $i \in N$, it holds that
+
+$$
+
+x_i \in \text{arg max}_{x_i \in [0, 1]^m} \left\{ \sum_{j} (v_{ij} - p_j) \cdot x_{ij} \; : \;  \sum_{j} p_j x_{ij} \leq B_i \right\}
+
+$$
+
+3. If $p_j > 0$, then $\sum_{i} x_{ij} = 1$.
+
+
+The conditions above define a competitive equilibrium. An equal-rates competitive equilibrium has one additional property:
+
+4. For each bidder $i$, there exists a rate $\beta_i$ such that:
+
+    a. If $x_{ij} > 0$, then $v_{ij} = \beta_i \cdot p_j$.
+
+    b. If $i$ does not spend the entire budget, then $\beta_i = 1$.
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Lemma 6.** Every ERCE is an FPPE, vise versa.
+</div>
+
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+From Lemma 5, it is easy to see that an FPPE is also a ERCE where $\beta_i = 1/\alpha_i$. 
+
+We now argue the converse. Given an ERCE $(p, x)$, let $\alpha_i = 1/\beta_i$. For a bidder $i$ and an item $j$ where $x_{ij} > 0$, the per-dollar return of $i$ on this item is $\alpha_i$. On the other hand, if the allocation $x$ does not follow the first-price rule, that is, there is an item $j$ such that $i$ bids the highest, but got zero allocation. One can then verify that, the second condition of a competitive equilibrium is not satisfied since there is a new allocation (with $i$ receiving shares of $j$) that yields a higher utility value for $i$. The other conditions of a FPPE easily follows from the definition of an ERCE.
+<span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+#### Shill-proof 
+
+My understanding of the statement "FPPE are shill-proof", is that, for the same problem instance (i.e., valuations and budgets), adding fake bids will not increase the revenue.
+
+First, observe the following:
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Observation 5.** Given a problem instance, if a BFPM $(\alpha, x)$ is not an FPPE without shill bids, then it is still not an FPPE after any shill bids are added. 
+</div>
+
+The lemma:
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Proposition 1.** An FPPE is shill-proof.
+</div>
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+Consider two FPPE, $P = (\alpha, x)$ and $P' = (\alpha', x')$, without and with shill bids, respectively. Note the revenue increase can only be generated by those who are not budget constrained under $P$. Since these players, denoted by $N'$, are already bidding their valuations, the allocations of items to some players in $N'$ must increase. 
+
+The only way for this to occur is that, some players in $N \setminus N'$ decreases their pacing multipliers when shill bids are presented, resulting in players in $N'$ winning items in $P$ that they were not winning under $P$. But this implies that $P$ strictly dominates $P'$. By observation 5, $P'$ is not a FPPE. This concludes the proof.
+</div>
+
+#### In the core
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Proposition 1.** An FPPE is in the core.
+</div>
+
+
+### Sensitivity and computation
+
+The authors then conducted sensitivity analysis of revenues and social welfare under a FPPE w.r.t different conditions such as increasing the number of bidders, the number of items, the budgets, and the valuations. 
+
+To find an FPPE, they show that solutions to the Eisenberg-Gale convex program for Fisher markets correspond to an FPPE, which can then be computed in polynomial time if inputs are rational. 

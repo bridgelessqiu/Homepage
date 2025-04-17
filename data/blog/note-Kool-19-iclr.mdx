@@ -1,0 +1,48 @@
+---
+title: 'Notes on Learning to Solve Routing [KHW-19]'
+date: 2025-02-06
+lastmod: '2025-02-06'
+tags: ['Paper-Note', 'RL', 'ML']
+draft: false
+summary: 'Kool, W., Van Hoof, H., & Welling, M. (2018). Attention, learn to solve routing problems!. ICLR 2019.'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Paper link](https://arxiv.org/pdf/1803.08475), super clearly written...
+
+
+
+### Graph attention recap 
+
+For simplicity, we omit the layer index. Unless stated otherwise, the discussion pertains to one layer of a GNN.
+
+**Single-head attention.** Let $h_i$ denote the embedding of a vertex $i$. Define $d_k$ and $d_v$ to be the dimensions of keys and values, respectively. Let $d_h$ denote the dimension of $h_i$. 
+
+In graph attention, the new embedding in the next layer is computed as follows:
+
+$$
+h_i' = \sigma \left(\sum_{j \in N(i)} a_{ij} v_{j} \right)
+$$
+
+where 
+
+1. $N(i)$ is the set of neighbors of $i$; $\sigma$ is a nonlinearity.
+
+2. $a_{ij} \in [0, 1]$ is the attention weight.
+
+3. $v_{j} \in \mathbb{R}^{d_v}$ is the value of vertex $j$. 
+
+Formally, $a_{ij}$ and $v_j$ are computed as follows. Let $W^{Q}$ ($d_k \times d_h$), $W^{K}$ ($d_k \times d_h$) and $W^{V}$ ($d_v \times d_h$) be the learnable parameters. For a vertex $i$, its query, key, and value are computed by projecting $h_i$:
+
+$$
+q_i = W^Q h_i, \; k_i = W^K h_i, \; v_i = W^V h_i
+$$
+
+For a neighbor $j$ of $i$, the weight $a_{ij}$ is the output of a softmax over the set $\{u_{i j'} : j' \in N(i) \}$, where the *compatibility* $u_{ij} \in \mathbb{R}$ is computed as follows:
+
+$$
+u_{ij} = \frac{q^T_i k_j}{\sqrt{d_k}}
+$$
+
+**Multi-head attention.** Let $M$ be the number of heads, and we compute $h_i'$ independently $M$ times, resulting a set of $M$ embeddings. Importantly, each head has its own set of learnable projection matrices. Following this, one can set $d_v = d_k = d_h / M$, then do concatenation over this set, followed by another project. One can also do averaging if we use multi-head attention in the final prediction layer.

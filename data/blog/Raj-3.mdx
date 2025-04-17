@@ -1,0 +1,77 @@
+---
+title: 'Raj - 2024 : Lecture 3'
+date: 2024-11-22
+lastmod: '2024-11-22'
+tags: ['Raj-24', 'Lecture-Note', 'Deep-Learning']
+draft: false
+summary: 'Deep Learning - Lecture 3'
+layout: PostSimple
+bibliography: references-data.bib
+---
+ 
+[Lecture 3](https://www.youtube.com/watch?v=ckecC7XVBFU&list=PLp-0K3kfddPwpm8SuB262r4owIkS7NNJj&index=4&ab_channel=CarnegieMellonUniversityDeepLearning)
+
+
+**A key assumption for this lecture:** The NN has a sufficient architecture (e.g., sufficiently deep and wide) to model the function desired, unless stated otherwise. 
+
+### Learning unknown functions
+**Neural Networks:** $f(X; W)$, $X$ is input (before semicolon), $W$ are the parameters.
+
+- The form of the target function $g(X)$ is unknown - need to sample.
+
+- Based on the samples, learn a set of parameters $W$ to approximate the true function $g(X)$ by minimizing the **empirical error** (however the error is defined).
+    - E.g., Binary classification: minimize the count of misclassifications. 
+
+- The hope is that, the learned $f(X; W)$ will fit the target function $g(X)$ everywhere, despite that it has only seen the samples.
+
+- **An example of learning decision boundary for binary classification:** [Link](https://youtu.be/ckecC7XVBFU?list=PLp-0K3kfddPwpm8SuB262r4owIkS7NNJj&t=2431).
+
+    - Learn $W$ such that for each input $X$, $W \cdot X \geq 0$ iff $X$ is a positive example (This may not be possible since data might not be separable by a hyperplane). 
+
+### A single-perceptron learning algorithm
+**Note:** $(i)$ Only a single neuron with threshold-$0$ activation function in the hidden layer. $(ii)$ This algorithm is for binary classification only. 
+
+1. Randomly initialize $W$.
+
+2. For each training instance $(X_i, y_i)$, $y_i \in \{-1, +1\}, \; i = 1, ..., N$
+
+    a. Let $\hat{y}_i = \text{sign}(W \cdot X_i)$.
+
+    b. If $\hat{y}_i \neq y_i$, then $W = W + \hat{y}_i X_i$. 
+
+3. Repeat step 2 until zero misclassifications.
+
+**Remarks.** 
+1. The algorithm converges if and only if the classes are linearly separable. Otherwise, it never converges. 
+
+2. This is an example of limitations of insufficient architecture. In this case, an NN with only one neuron in the only hidden layer. 
+
+3. An alternative way to look at this problem:
+
+    a. Reflect each datapoint $X_i$ by $y_i$, that is, we obtain a new $X_i' = y_i X_i$. 
+
+    b. Find a hyperplane (where $W$ is the normal vector) such that all reflected points lie on the same side of the plane. 
+
+    c. If such a hyperplane exists, then a trivial solution is setting $W = 1 / N \cdot \sum_i X_i'$. 
+
+
+### When classes are not linearly separable
+
+One needs multiple perceptrons, possibly one perceptron for each decision boundary. However, note that the single-perceptron algorithm (stated above) **cannot** be naively applied here on each perceptron, unless one tries every possible data relabelling for each perceptron. Learning is hard. 
+
+Issues are introduced by a combination of $(i)$ threshold activation functions (either $0$ or infinite gradients), and $(ii)$ classification errors calculation (discrete and not differentiable). Therefore, algorithms based on incremental improvement is unlikely to work here because a small change in the weights often does not lead to a change in the resulting loss, unless a the threshold condition is satisfied. 
+
+<p align="center">
+<img src="../../static/images/raj-3-1.png" width="600" height="600" />
+<em>Source: The class lecture note ([Link](https://deeplearning.cs.cmu.edu/F24/document/slides/lec3.learning.pdf))</em>
+</p>
+
+Both the activation function and the error function should be differentiable w.r.t. $W$. Note that, whatever error function we use, it should be a good proxy for classification error. 
+
+Let $\text{div}(f(W; X), g(X))$ be the divergence (loss). One can then find $W$ to minimize the empirical loss:
+
+$$
+\frac{1}{N} \sum_{i} \text{div}(f(W; X_i), g(X_i))
+$$
+
+which estimates the true loss $\mathbb{E} [\text{div}(f(W; X_i), g(X_i))]$; $X$ is the random variable.

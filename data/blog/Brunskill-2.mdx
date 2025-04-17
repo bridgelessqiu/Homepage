@@ -1,0 +1,65 @@
+---
+title: 'Brunskill - Lecture 2'
+date: 2025-01-30
+lastmod: '2025-01-30'
+tags: ['Lecture-Note', 'RL', 'ML']
+draft: false
+summary: 'Second lecture from Prof. Brunskill'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Lecture Link](https://www.youtube.com/watch?v=gHdsUUGcBC0&list=PLoROMvodv4rN4wG6Nk6sNpTEbuOSosZdX&index=3&ab_channel=StanfordOnline)
+
+**Assumption:** The dynamics model and the reward model (together describe how the world works) are given <mark> (to whom? to the agents?) </mark>. 
+
+## Markov Reward Process Continues
+
+### Markov property
+
+In the lecture, the following this shown:
+
+$$
+V(s) = R(s) + \gamma \cdot \sum_{s'} Pr(s' | s) V(s')
+$$
+
+which is a result of the Markov assumption. Here we provide a detailed derivation. Recall that $G_t$, $s_t$, $r_t$ are all random variables. 
+
+$$
+\begin{align*}
+V(s) &= \mathbb{E}[G_t | s_t = s] \\
+&= \mathbb{E}[r_t + \gamma \cdot G_{t+1} | s_t = s]\\
+&= \mathbb{E}[r_t | s_t = s] + \gamma \cdot \mathbb{E}[G_{t+1} | s_t = s]\\
+\end{align*}
+$$
+
+Here, $R(s)$ is defined as $\mathbb{E}[r_t | s_t = s]$ (in the previous lecture), hence the first term. The second term $\mathbb{E}[G_{t+1} | s_t = s]$ can be further expressed as:
+
+$$
+\begin{equation*}
+\mathbb{E}[G_{t+1} | s_t = s] = \mathbb{E}[\; \mathbb{E}[G_{t+1} | s_{t+1}] \; | s_t = s]
+\end{equation*}
+$$
+
+Markov property is used here to obtain Equation above. In general, $\mathbb{E}[X | Z = z] \neq \mathbb{E}[\; \mathbb{E}[X | Y] \; | Z = z]$, where the equality only holds when X is conditionally independent of Z given Y. This is indeed true in our case, where the return at $t+1$ is independent to the state at $t$ given a state at $t+1$, due to the Markov assumption. It then follows that:
+
+$$
+\begin{align*}
+\mathbb{E}[\;\mathbb{E}[G_{t+1} | s_{t+1}] \; | s_t = s] &= \sum_{s'} \mathbb{E}[G_{t+1} | s_{t+1} = s'] \cdot Pr(s_{t+1} = s' | s_t = s)\\
+&= \sum_{s'} V(s') \cdot Pr(s_{t+1} = s' | s_t = s)
+\end{align*}
+$$
+
+### Compute the values 
+
+Given $V(s) = R(s) + \gamma \cdot \sum_{s'} Pr(s' | s) V(s')$, if we know the values of $R(s)$ for all states $s$ and the transition matrix $P$, then one can solve the valuation as follows
+
+$$
+V = (I - \gamma P)^{-1} R
+$$
+
+where $(I - \gamma P)$ is invertible since as $P$ is a stochastic matrix, and $\gamma < 1$. 
+
+One can also use iterative method by $(i)$ initiating $V_0(s)$ (say, to $0$) for all states $s$, and then iteratively update the valuation $V_k(s) = R(s) + \gamma \cdot \sum_{s'} Pr(s' | s) V_{k-1}(s')$, $k = 1, ..., $ until convergence.
+
+

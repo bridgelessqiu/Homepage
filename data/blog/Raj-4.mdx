@@ -1,0 +1,67 @@
+---
+title: 'Raj - 2024 : Lecture 4'
+date: 2025-01-04
+lastmod: '2025-01-04'
+tags: ['Raj-24', 'Lecture-Note', 'Deep-Learning']
+draft: false
+summary: 'Deep Learning - Lecture 4'
+layout: PostSimple
+bibliography: references-data.bib
+---
+ 
+[Lecture 4](https://www.youtube.com/watch?v=Tp--z7z9ndM&list=PLp-0K3kfddPwpm8SuB262r4owIkS7NNJj&index=5&ab_channel=CarnegieMellonUniversityDeepLearning)
+
+**Goal:** Find parameter $W$ such that the loss function is minimized.
+
+### Gradient Descent
+
+Many loss functions has no closed form, therefore, computing zero gradient (w.r.t. the model parameters) and checking Hessian is not always viable. 
+
+#### The algorithm
+
+1. Initialize $W^{0}$, $k = 0$.
+
+2. While $|f(W^{k+1}) - f(W^{k})| > \epsilon$ :
+
+    a. $W^{k+1} = W^{k} - \eta^k \cdot \nabla_{W} f(W^{k})^{T}$.
+
+where $\eta^k$ is the step size at the $k$th iteration, and $\leq \epsilon$ is a termination criteria. The intuition is that, we are checking if increasing each model parameter would increase or decrease the loss. 
+
+**Remark.** For a neural network, when computing the gradient, one can think all parameters across all layers as elements of a single, large "vector of parameters". 
+
+
+### Back to the learning problem
+
+1. The training set $\{(X_i, d_i)\}_{i=1}^N$, where $d_i = g(X_i)$.
+
+2. Minimize the loss: $L(W) = (1/N) \cdot \sum_{i} div(f(X_i; W), d_i)$. Note that since the training set is fixed, $W$ is the only set of variables here.
+
+3. Do gradient descent w.r.t $W$. 
+
+**The followings are to be defined:** (all see the previous lecture)
+
+1. The function $f(\cdot; \cdot)$ is a neural network.
+
+    a. Activation functions must be differentiable.
+
+2. The training set consists of samples of the ground-truth target function $g(\cdot)$. 
+
+    a. E.g., $X_i \in \mathbb{R}^n$, $g(X_i) = d_i \in \mathbb{R}^m$. 
+
+3. The divergence function $div(\cdot; \cdot)$
+
+    a. Must be differentiable. 
+    
+    b. A list of candidate functions: [Link](https://towardsdatascience.com/loss-functions-and-their-use-in-neural-networks-a470e703f1e9)
+
+
+### Notes
+
+1. Gradient and level set: [Link](https://www.youtube.com/watch?v=rsfuK-gwqgE&ab_channel=TylerLawson).
+
+
+2. Hessian and Eigenvalues: [Link](https://www.youtube.com/watch?v=o6MtIW2pNr4&ab_channel=DrewMacha)
+
+3. A list of activation functions: [Link](https://stats.stackexchange.com/questions/115258/comprehensive-list-of-activation-functions-in-neural-networks-with-pros-cons)
+
+

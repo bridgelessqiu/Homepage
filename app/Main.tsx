@@ -14,10 +14,6 @@ export default function Home({ posts }) {
           {/* <div className="flex flex-col py-4 gap-10 text-xl"> 
           </div> */}
 
-          {/* <h1 className="text-3xl font-extrabold leading-9 tracking-tight from-lime-500 to-blue-400  sm:text-4xl sm:leading-10 md:text-7xl md:leading-14">
-            Hi, 你好!
-          </h1> */}
-
           <h1 className="text-7xl font-bold bg-gradient-to-r from-lime-300 to-blue-700 text-transparent bg-clip-text">
             Hello, 你好!
           </h1>
@@ -39,11 +35,11 @@ export default function Home({ posts }) {
           </p> */}
 
           <p>
-            I study the foundations of large-scale <span className = 'text-orange-200'><strong> complex systems </strong></span>(e.g., social systems, multi-agent systems and multi-sided markets) using <span className = 'text-orange-200'><strong>machine learning</strong></span>, <span className = 'text-orange-200'><strong>optimization</strong></span>, and <span className = 'text-orange-200'><strong>computational modeling</strong></span>.
+            I study the foundations of large-scale <span className = 'text-orange-200'><strong> complex systems </strong></span>(e.g., social systems, economics systems, and multi-agent systems) using <span className = 'text-orange-200'><strong>machine learning</strong></span>, <span className = 'text-orange-200'><strong>optimization</strong></span>, and <span className = 'text-orange-200'><strong>computational modeling</strong></span>.
           </p>
 
           <p>
-            I develop formal <strong>frameworks</strong> and <strong>algorithms</strong> to simulate, learn and optimize these large systems, aiming to <span className = 'select-text'>improve system performance</span>, understand system behaviors, and benefit the social good.
+            I develop formal <span className = 'text-orange-200'><strong>frameworks</strong></span> and <span className = 'text-orange-200'><strong>algorithms</strong></span> to simulate, learn and optimize these large systems, aiming to <span className = 'select-text'>improve system efficiency</span>, understand system behaviors, and benefit the social good.
           </p>
 
           </div>
@@ -57,9 +53,9 @@ export default function Home({ posts }) {
 
           <ul className="list-disc list-inside text-lg">
             <li>Optimization</li>
-            <li>Machine Learning</li>
-            <li>Computational Social Science & Epidemiology</li>
+            <li>Computational Economics & Social Science</li>
             <li>Game Theory</li>
+            <li>Machine Learning</li>
             <li>Mathematical Programming</li>
           </ul>
 
@@ -154,8 +150,6 @@ export default function Home({ posts }) {
           </li>
         </ul>
 
-
-
           {/* <ul className="space-y-4">
             <li className="rounded-md shadow-sm">
               <h3 className="text-lg font-semibold">
@@ -226,11 +220,11 @@ export default function Home({ posts }) {
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
           <Link
-            href="/blog"
+            href="/pubs"
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="All posts"
+            aria-label="All notes"
           >
-            All Posts &rarr;
+            All Papers &rarr;
           </Link>
         </div>
       )}

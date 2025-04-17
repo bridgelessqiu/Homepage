@@ -1,0 +1,46 @@
+---
+title: 'Game Theory Reference'
+date: 2025-02-26
+lastmod: '2025-02-25'
+tags: ['Econ', 'Game-Theory']
+draft: false
+summary: Definitions of some game theory terms that I often refer to.
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+# Concepts
+
+## Cooperative games
+
+The **characteristic function** form of a cooperative game $G(v, N)$ consists of the following components:
+
+1. A set $N = \{1, ..., n\}$ of players.
+
+2. A **characteristic function** $v : 2^N \rightarrow \mathbb{R}$. Here $2^N$ is the set of all **coalitions** of $N$, where each coalition $C \subseteq N$ is a subset of players. In essence, the function $v$ assigns a value to each coalition. 
+
+#### An outcome 
+
+An outcome of a cooperative game $G(v, N)$ with transferable utility consists of the following:
+
+1. A **coalition partition** $\rho = \{C_1, ..., C_k\}$ of $N$.
+
+2. A **payoff allocation** $\psi = \{\psi_1, ..., \psi_n\} \in \mathbb{R}^n$. 
+
+From a high-level, $v(C)$ is shared with players in $C$ (i.e., transferable utility). Further, the payoff allocation must be <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>feasible</span> for each coalition $C \in \rho$. That is:
+
+$$
+\sum_{i \in C} \psi_i \leq v(C), \; \forall C \in \rho
+$$
+
+## Cores
+A core of a cooperative game with transferable utility is the set of all payoff allocations $\psi = \{\psi_1, ..., \psi_n\} \in \mathbb{R}^n$ (defined above) where:
+
+1. The coalition partition is the grand coalition (i.e., $\rho = \{N\}$).
+
+2. Collectively rational: $\sum_{i \in N} \psi_i = v(N)$.
+
+3. Coalitionally rational: $\sum_{i \in C} \psi_i \geq v(C), \; \forall C \subseteq N$.
+
+Intuitively, if a feasible allocation is in the core, then for each coalition $C \subset N$, there does not exist an alternative allocation such that <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>under the feasibility constraint</span>, at least one players in $C$ receives a higher payoff while all others are not worse off (i.e., an allocation in the core is pareto-dominant). As a result, at least one players in $C$ would not have the incentive to form the coalition. 
+

@@ -16,13 +16,14 @@ export default function Projects() {
 
         <div className="container py-12">
           <p>
-            You may click the <span className = 'text-lime-200'><strong>title</strong></span> of a paper to view its pdf file.
+            One may click the <span className = 'text-lime-200'><strong>title</strong></span> to view its pdf file.
           </p> 
 
           <div className="flex flex-col py-4 gap-10 text-xl"> 
           </div>
 
           <ul className="space-y-4 list-decimal">
+
           <li className="rounded-md shadow-sm">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-blue-200">
@@ -63,11 +64,27 @@ export default function Projects() {
                 </a>
               </h3>
               <span className = 'text-yellow-100'>
-                <strong>In Submission</strong>
+                <strong>TCS-25</strong>
               </span>
             </div>
             <p className="pt-2 text-sm">
               <strong>With</strong> Daniel Rosenkrantz, Madhav V. Marathe and S. S. Ravi
+            </p>
+          </li>
+
+            <li className="rounded-md shadow-sm">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-blue-200">
+                <a href="https://arxiv.org/pdf/2503.12684" target='_blank' className="hover:underline">
+                  On Some Fundamental Problems for Multi-Agent Systems Over Multilayer Networks
+                </a>
+              </h3>
+              <span className = 'text-yellow-100'>
+                <strong>AAMAS-25</strong>
+              </span>
+            </div>
+            <p className="pt-2 text-sm">
+              Daniel J. Rosenkrantz, Madhav Marathe, <strong className='underline decoration-2'>Zirou Qiu</strong>, S. S. Ravi, Richard Stearns, 
             </p>
           </li>
 
@@ -124,7 +141,7 @@ export default function Projects() {
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-blue-200">
                 <a href="https://arxiv.org/pdf/2301.02889" target='_blank' className="hover:underline">
-                 Networked Anti-Coordination Games Meet Graphical Dynamical Systems: Equilibria and Convergence
+                 Networked Anti-Coordination Games Meet Graphical Dynamical Systems: <br /> Equilibria and Convergence
                 </a>
               </h3>
               <span className = 'text-yellow-100'>
@@ -173,7 +190,7 @@ export default function Projects() {
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-blue-200">
                 <a href="https://proceedings.mlr.press/v162/rosenkrantz22a/rosenkrantz22a.pdf" target='_blank' className="hover:underline">
-                  Efficiently Learning the Topology and Behavior of a Networked Dynamical System Via Active Queries
+                  Efficiently Learning the Topology and Behavior of a Networked Dynamical System <br /> Via Active Queries
                 </a>
               </h3>
               <span className = 'text-yellow-100'>

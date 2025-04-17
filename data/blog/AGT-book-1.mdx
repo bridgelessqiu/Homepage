@@ -1,0 +1,70 @@
+---
+title: 'Notes on Algorithmic Game Theory - Chapter 1'
+date: 2025-02-09
+lastmod: '2025-02-09'
+tags: ['Book-Note', 'Game-Theory', 'Econ']
+draft: false
+summary: 'Notes on Algorithmic Game Theory [NRTV 07]  - Chapter  1.'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+### One-shot simultaneous (synchronous) move games
+
+1. A set ${1, ..., n}$ of $n$ players; $S_i$ is the set of all possible strategies of player $i$.
+
+2. A *strategy vector* (profile) is denoted $s = (s_1, ..., s_n)$, $s_i \in S_i$; let $S$ denote the set of all possible strategy vectors. 
+
+3. Each player has a *preference ordering* (complete, transitive, reflexive) over $S$. One may think each strategy vector as an outcome. 
+
+One way to capture preference is via utility/cost functions $u_i : S \rightarrow \mathbb{R}$, $c_i : S \rightarrow \mathbb{R}$.
+
+See the book for examples of games.
+
+#### Dominant strategy 
+
+A strategy *vector* $s \in S$ is a dominant strategy solution, if all each player $i$, and each alternative profile $s' \in S$, 
+
+$$
+    u_i(s_i, s'_{-i}) \geq u_i(s'_i, s'_{-i})
+$$
+
+In other words, a rational payoff-maximizing player $i$ would play $s_i$ regardless of what other players do. Note that, however, playing a dominant strategy does not guarantee that a player achieves the highest possible payoff over all outcomes.
+
+#### Pure Nash Equilibrium
+
+A strategy profile $s \in S$ is a pure Nash if for each player $i$, and for every alternative strategy $s_i' \in S_i$, 
+
+$$
+u_i(s_i, s_{-i}) \geq u_i(s'_i, s_{-i})
+$$
+
+That is, under $s$, no player can improve its payoff by unilaterally deviating from its strategy. 
+
+> For games with multiple Nash equilibria, different equilibria can have (widely) different payoffs for the players.
+
+#### Mixed Nash Equilibria
+
+Players play randomized strategies, defined by a probability distribution over their available actions. This distribution represents the player's (mixed) strategy.
+
+Players want to maximize the expected payoff. Consequently, a mixed Nash is a vector of mixed strategies (i.e., prob. distributions over the actions) from the players, where no player can unilaterally switch to an alternative distribution to achieve a higher expected payoff.
+
+Formally, given a player $i$, let $\Delta(S_i)$ be the set of all probability distribution on $S_i$; $\Delta(S_i)$ is the set of all mixed strategies for player $i$. One can extend the definition of utility function $u_i()$. In particular, given a mixed strategy vector $(p_1, ..., p_n)$, $p_i \in \Delta(S_i)$, the expected payoff of $i$ is as follows:
+
+$$
+    u_i(p_1, ..., p_n) = \sum_{(s_1, ..., s_n) \in S} \left( \prod_{i} p_i(s_i) \cdot u_i(s_1, ..., s_n) \right)
+$$
+
+where 
+
+1. $u_i(p_1, ..., p_n)$ is the expected payoff of $i$ given $(p_1, ..., p_n)$.
+
+2. $S$ is the set of all (pure) strategy profiles, and sum $\sum_{(s_1, ..., s_n) \in S}$ is over all possible profiles. 
+
+3. $p_i(s_i)$ is the probability of $i$ choosing strategy $s_i$ under distribution specified by $p_i$.
+
+4. $u_i(s_1, ..., s_n)$ is the utility of $i$ under the (pure) profile $(s_1, ..., s_n)$
+
+One can easily verify that that above definition of mixed payoff is reduced to determinist payoff (i.e., $u_i(p_1, ..., p_n) = u_i(s_1, ..., s_n)$) if $p_i$ is a pure strategy (i.e., w.p. $1$ playing a particular action) for all players $i$.
+
+The definition of a mixed Nash follows accordingly. 

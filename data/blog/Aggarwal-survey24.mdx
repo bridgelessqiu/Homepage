@@ -1,0 +1,129 @@
+---
+title: 'Notes on Auto-bidding and Auctions Survey [Aggarwal-et-al-24]'
+date: 2025-04-14
+lastmod: '2025-04-14'
+tags: ['Paper-Note', 'Econ', 'Game-Theory']
+draft: false
+summary: 'Aggarwal, G., Badanidiyuru, A., Balseiro, S. R., Bhawalkar, K., Deng, Y., Feng, Z., ... & Zuo, S. (2024). Auto-bidding and auctions in online advertising: A survey. ACM SIGecom Exchanges, 22(1), 159-183.'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Paper link](https://arxiv.org/abs/2408.07685)
+
+## The setting
+
+1. $n$ autobidding agents.
+
+2. $m$ auctions (e.g., for $m$ bundles of impressions). 
+
+3. **Valuation.** The <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>valuation</span> for an agent $i$ winning an auction $j$ is $v_{ij}$.
+
+    Such valuations can be given by trained ML models such as predicted click-through rate and predicted conversion-rate.
+
+4. **Slots.** Each auction has $\ell$ slots, indexed by $k$, with decreasing (w.r.t. $k$) importance characterized by the <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>decay parameters</span> $\beta_{jk} \in [0, 1]$. Specifically, an agent winning slot $k$ in auction $j$ receives a value of $\beta_{jk} v_{ij}$. (An agent can win multiple slots in the same auction).
+
+    W.l.o.g., one can assume that $\beta_{j1} := 1$, and auctions have the same number of slots (as one can add dummy slots with decay factor $0$).
+
+5. **Auctions.** Fix an auction $j$ with $\ell$ slots. Each player $i$ submits a single bid $b_{ij}$ for the entire auction. 
+
+    a. The input to the auction is then the vector of bids $b_j = (b_{1j}, b_{2j}, \ldots, b_{nj})$. 
+
+    b. The output of the auction for each agent is the $(i)$ allocation $x_{ijk} (b_j) \in [0, 1]$ for each slot $k = 1, ..., \ell$, and $(ii)$ a payment $p_{ij}(b_j) \in \mathbb{R}$.
+
+    When each auction has only a single slot, we omit the index $k$. 
+
+    <div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+    **Question. [12:20PM - 16/04/2025]**  
+    
+    How to make sense of a fractional assignment of a slot? I can understand a fractional assignment of an auction (e.g., the setting in FPPE), which correspond to the proportion of the pool of slots allocated to an agent. But, again, even this interpretation does not make complete sense here since slots are not homogeneous, each of them has its own decay parameter. 
+
+    Maybe the fractional assignment is interpreted as the probability of winning a slot, then the sum of assignments (over all agents) for each slot should be $1$. Not sure if this is the case. 
+    </div>
+
+## Problems from a bidding agent's perspective
+
+**Goal**: Submit bids that maximize some objectives subject to some constraints.
+
+The discussion below considers auctions with a single slot, omitting the index $k$. Nevertheless, my guess is that it can be extended to the case of multiple slots where the total valuation received by an agent $i$ from an auction $j$ is of the form $\sum_{k=1}^\ell x_{ijk} \cdot \beta_{jk}  v_{ij}$. 
+
+#### Objectives of an agent $i$
+
+1. **Utility-maximization**: $\sum_{j \in [m]} x_{ij} v_{ij} - p_{ij}$
+
+2. **Value-maximization**: $\sum_{j \in [m]} x_{ij} v_{ij}$ 
+
+
+> Value maximization focuses on maximizing clicks or conversions, regardless of cost, appealing to advertisers who prioritize these metrics. It indirectly considers payments through a constraint on payments or the return on spend. Utility maximization, common in economics, maximizes the difference between value and payments, requiring values to be expressed in monetary terms, which can be difficult for advertisers.
+
+3. **Hybrid**: $\sum_{j \in [m]} x_{ij} v_{ij} - \lambda p_{ij}$, for some $\lambda \in [0, 1]$. Note that this factor $\lambda$ is universal across all auctions and agents. 
+
+#### Constraints of an agent $i$ 
+
+1. **Budget**: $\sum_{j \in [m]} p_{ij} \leq B_i$ for some budget $B_i$. 
+
+2. **Return-on-spend** (RoS): $\sum_{j \in [m]} x_{ij} v_{ij} \geq \tau_i \cdot \sum_{j \in [m]} p_{ij}$ for some $\tau_i \geq 1$. 
+
+Re-emphasize that the valuations $v_{ij}$ is independent to the bids, whereas the allocations $x_{ij}$ and payments $p_{ij}$ (should) depend on the bids. 
+
+#### Formulation  
+
+<div style={{ border: "1px solid white", padding: "10px", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)", textAlign: "center"}}>
+$\max{} \sum_{j \in [m]} x_{ij} v_{ij} - \lambda \cdot p_{ij}$ 
+
+s.t. Budget and RoS constraints.
+</div>
+
+&nbsp;
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+    **Question. [1:28PM - 16/04/2025]**  
+    
+    Why this is a formulation for bidding agents? What are the variables?
+    
+    If I understand correctly, agents can only submit bids; they cannot explicitly choose either the payment amount or the allocations. Now, this objective function is not a function of the bids. So, how can an agent optimize this function? It seems to me that this program is for auctioneers (to improve the welfare of the agents), not for agents themselves.
+
+    My current guess is that, bids are implicitly optimized since they are used to compute the allocations and payments, whereas the function that maps bids to allocations and payments is defined by the auction mechanism. If this is the case, what is the advantage of this program over the one that directly optimizes the bids?
+</div>
+
+## Problems from an auctioneer's perspective 
+
+**Goal:** Design an auction mechanism that maximizes some objectives subject to some constraints.
+
+#### Objectives  
+
+1. **Revenue**: $\sum_{i \in [n]} \sum_{j \in [m]} p_{ij}$
+
+2. **Liquid welfare** (LWEL): 
+
+$$
+\begin{equation*} 
+\sum_{i \in [n]} \min{} \{B_i, \frac{\sum_{j \in [m]} x_{ij} v_{ij}}{\tau_i}\}
+\end{equation*}
+$$
+
+    Fix and agent $i$. Let 
+
+    $$
+    \begin{equation*} 
+    \gamma_i := \frac{\sum_{j \in [m]} x_{ij} v_{ij}}{\tau_i}
+    \end{equation*}
+    $$
+    
+    Note that by the RoS constraint, $\gamma_i \geq \sum_{j \in [m]} p_{ij}$. Further, by the budget constraint, $B_i \geq \sum_{j \in [m]} p_{ij}$.
+
+    Liquid welfare is the maximum amount of money that can be extracted from an agent while satisfying the constraints. Here is one way to think about it. Fix an agent $i$. 
+
+    a. If $\gamma_i \geq B_i$, then in the best case, the total payment (i.e., $\sum_{j \in [m]} p_{ij}$) of an agent $i$ can be made to equals to its budget (i.e., bind the budget constraint), while the RoS constraint remains satisfied. In this case, LWEL equals to $B_i$.
+
+    b. On the other hand, if $\gamma_i < B_i$, then in the best case, one can make the total payment of an agent $i$ to equals to $\gamma_i$ (i.e., RoS is binding). In this case, LWEL equals to $\gamma_i$.
+
+    The observation follows: 
+
+    <div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+    **Observation 1.** Given an instance of the problem, for any outcome of the auction (i.e., payments and allocations), its resulting liquid welfare is at least its revenue. The equality holds if and only if for each agent, either the RoS constraint or the budget constraint (or both) is binding. 
+    </div>
+
+
+> For value-maximization agents, under their optimal strategy (assuming others' fixed), it is often the case that either Budget or RoS binds, unless there is no chance for them to obtain higher values by increasing their spend. For this reason, liquid welfare receives significantly more attention in the literature especially with value-maximization agents.
+

@@ -1,0 +1,55 @@
+---
+title: 'Notes on Auto Biddings'
+date: 2024-12-03
+lastmod: '2025-01-01'
+tags: ['Talks', 'Econ']
+draft: false
+summary: 'A talk on autobidding by Aggarwal - 2023.'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+## First Talk 
+[Market Algorithms for Autobidding](https://www.youtube.com/watch?v=Yl-b94rk-84&t=244s&ab_channel=SimonsInstitute) by Gagan Aggarwal - Google Research
+
+**Background**: After a user query, a collection of relevant ads are selected. An auction then determines which ads to show (to an user). 
+
+1. Advertisers are **buyers**.
+
+2. **Items** to sell can be:
+
+    a. Slots (where ads are displayed) on a website. 
+
+    b. Advertisers often bid on keywords, and participate in multiple auctions with queries for the relevant keywords.
+
+3. Company (e.g., Google, Meta) are sellers. 
+
+The common auction for selling a single item is the *second price auction*. 
+
+
+### Auto-bidding
+
+Instead of submitting the exact bids, advertisers provides *goals* (e.g., maximizing utility, value, number of conversions) and *constraints* (e.g., budget, ROI) to an automated system. The system then sets the bids on advertisers' behalf in auctions, aiming to achieve the goal (i.e., optimize objectives) s.t. the constraints. 
+
+#### Question I: Bidding Algorithms
+
+**One example bidding algorithm** is discussed on page 5 - 6 in the survey paper by [Aggarwal et al.' 24'](https://arxiv.org/abs/2408.07685), with a more detailed explanation in this 2019 paper by [ABM' 19](https://link.springer.com/chapter/10.1007/978-3-030-35389-6_2). Here, the optimal bid for an agent in auction $j$ is of the form:
+
+$$
+b_j = \frac{v_j + \sum_c \alpha_c w_j^c}{\lambda + \sum_c \alpha_c}
+$$
+
+obtain from the dual program. The highlight is that, $(i)$ in a truthful auction (e.g., second-price) where $(ii)$ the prices of items are known (and fixed), by bidding the above amount, an agent gets the items that optimize its objective. 
+
+The above results is for the scenario where only one advertiser uses an auto-bidding system, where other submit their fixed bids. 
+
+#### Question II: Equilibria
+
+**When everyone uses autobidding - Dynamics and Equilibrium.** Some work on this: [APZ' 23](https://dl.acm.org/doi/10.1145/3580507.3597707), [ABM' 19](https://link.springer.com/chapter/10.1007/978-3-030-35389-6_2).
+
+
+#### Question III: Auction design
+
+This is from an auctioneer's perspective. Many factors to consider(e.g., reserve price, multi-channel design). This issue is more complicated when buyers are value-maximizing.  
+
+This multi-channel auction design is very interesting. 
