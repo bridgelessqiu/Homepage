@@ -15,7 +15,7 @@ export default function Home({ posts }) {
           </div> */}
 
           <h1 className="text-7xl font-bold bg-gradient-to-r from-lime-300 to-blue-700 text-transparent bg-clip-text">
-            Hello, 你好!
+            Hi, 你好!
           </h1>
 
           <div className="flex flex-col py-4 gap-10 text-xl"> 
