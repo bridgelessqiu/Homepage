@@ -11,6 +11,12 @@ bibliography: references-data.bib
 
 [Paper link](https://arxiv.org/abs/2408.07685)
 
+### Query
+
+This notion of a <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>query</span> is not explicitly defined in the paper, though it comes up multiple times. My understanding is that, a query can be a search query that a user provides (like Google, Instagram). Nevertheless, it could generally be any event where ads are eligible to be shown. As a result, each query (or ad opportunity) triggers its own auction, with slots for multiple ads.
+
+As of reading this paper, it is unclear to me an auction is defined at what level. Is it per-query, or a bundle of queries (where each query has a bundle of slots)?
+
 ## The setting
 
 1. $n$ autobidding agents.
@@ -21,7 +27,7 @@ bibliography: references-data.bib
 
     Such valuations can be given by trained ML models such as predicted click-through rate and predicted conversion-rate.
 
-4. **Slots.** Each auction has $\ell$ slots, indexed by $k$, with decreasing (w.r.t. $k$) importance characterized by the <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>decay parameters</span> $\beta_{jk} \in [0, 1]$. Specifically, an agent winning slot $k$ in auction $j$ receives a value of $\beta_{jk} v_{ij}$. (An agent can win multiple slots in the same auction).
+4. **Slots.** Each auction (trigger by a query as we discussed above) has $\ell$ slots, indexed by $k$, with decreasing (w.r.t. $k$) importance characterized by the <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>decay parameters</span> $\beta_{jk} \in [0, 1]$. Specifically, an agent winning slot $k$ in auction $j$ receives a value of $\beta_{jk} v_{ij}$. (An agent can win multiple slots in the same auction).
 
     W.l.o.g., one can assume that $\beta_{j1} := 1$, and auctions have the same number of slots (as one can add dummy slots with decay factor $0$).
 
@@ -127,3 +133,8 @@ $$
 
 > For value-maximization agents, under their optimal strategy (assuming others' fixed), it is often the case that either Budget or RoS binds, unless there is no chance for them to obtain higher values by increasing their spend. For this reason, liquid welfare receives significantly more attention in the literature especially with value-maximization agents.
 
+## Bidding algorithms
+
+Fix an agent $i$.  
+
+**ON GOING...**
