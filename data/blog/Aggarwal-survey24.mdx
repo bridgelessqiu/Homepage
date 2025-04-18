@@ -40,7 +40,7 @@ As of reading this paper, it is unclear to me an auction is defined at what leve
     When each auction has only a single slot, we omit the index $k$. 
 
     <div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
-    **Question. [12:20PM - 16/04/2025]**  
+    **Question. [12:20PM - 04/16/2025]**  
     
     How to make sense of a fractional assignment of a slot? I can understand a fractional assignment of an auction (e.g., the setting in FPPE), which correspond to the proportion of the pool of slots allocated to an agent. But, again, even this interpretation does not make complete sense here since slots are not homogeneous, each of them has its own decay parameter. 
 
@@ -83,13 +83,13 @@ s.t. Budget and RoS constraints.
 &nbsp;
 
 <div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
-    **Question. [1:28PM - 16/04/2025]**  
+    **Question. [1:28PM - 04/16/2025]**  
     
     Why this is a formulation for bidding agents? What are the variables?
     
     If I understand correctly, agents can only submit bids; they cannot explicitly choose either the payment amount or the allocations. Now, this objective function is not a function of the bids. So, how can an agent optimize this function? It seems to me that this program is for auctioneers (to improve the welfare of the agents), not for agents themselves.
 
-    My current guess is that, bids are implicitly optimized since they are used to compute the allocations and payments, whereas the function that maps bids to allocations and payments is defined by the auction mechanism. If this is the case, what is the advantage of this program over the one that directly optimizes the bids?
+    My current guess is that, bids are implicitly optimized since they are used to compute the allocations and payments, whereas the function that maps bids to allocations and payments is defined by the auction mechanism. If this is the case, what is the advantage of this program over the one that directly optimizes the bids? Do they solve the dual instead or something? 
 </div>
 
 ## Problems from an auctioneer's perspective 
@@ -135,6 +135,62 @@ $$
 
 ## Bidding algorithms
 
-Fix an agent $i$.  
+Fix an agent $i$. We omit the index $i$ in the discussion below.
+
+#### LP for truthful auction 
+
+1. > Let $p_j$ be the price of an ad for this advertiser for query $j$.
+
+    I guess that the price $p_j$ is the payment for the auction $j$ (for agent $i$), and such auction is triggered by a query $j$. Also, my guess is that there is only a single slot in the auction.
+
+    What is "and ad for an advertiser"? 
+
+    **Note:** While reading their formulation further, it seems that this price $p_j$ is not the same as the payment $p_{ij}$ for the auction $j$. Rather, $p_{ij} = x_{ij} \cdot p_j$, which makes sense.
+
+2. > Suppose, for argument, we know the query sequence and the values of $p_j$ in advance.
+
+    <div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+    **Question. [09:49AM - 04/18/2025]**  
+
+    As pointed out by the authors, the price of an ad depends on the bids and auction mechanism. So, it is not clear to me how to know the price in advance. Is this assumption only made to get analytical results?
+    </div>
+
+The formulations of the primal and dual (from the perspective of a single bidding agent $i$) are as follows
+
+<div style={{ border: "1px solid white", padding: "10px", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)", textAlign: "center"}}>
+**Primal**
+
+$$
+\begin{align*}
+&\max{} \;\; \sum_{j \in [m]} (v_{ij} - \lambda p_j) \cdot x_{ij} \\\\
+
+&\text{s.t.} \;\; \sum_{j \in [m]} p_j \cdot x_{ij} \leq B_i^{c} + \sum_{j \in [m]} w_{ij}^c x_{ij},  \;\; \forall c \in C\\\\
+
+& \;\;\;\;\;\;\;\; x_{ij} \in [0, 1], \;\; \forall j \in [m] \\
+\end{align*}
+$$
+</div>
+
+Here $C$ is a set of parameters that captures different variants of Budget and RoS constraints. One example can be $C = \{c_1, c_2\}$ where $B_i^{c_1} = B_i$, $w_{ij}^{c_1} = 0$ (i.e., the budget constrain) and $B_i^{c_2} = 0$, $w_{ij}^{c_2} = \tau_i v_{ij}$ (i.e., the RoS constraint).
+
+One can verify that the dual is as follows:
+
+<div style={{ border: "1px solid white", padding: "10px", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)", textAlign: "center"}}>
+**Dual**
+
+$$
+\begin{align*}
+&\max{} \;\; \sum_{j \in [m]} \delta_j + \sum_{c \in C} \alpha_c B_i^c \\\\
+
+& \text{s.t.} \;\; \delta_j \geq \sum_{c \in C} \alpha_c \cdot (w_{ij}^c - p_j) + v_{ij} - \lambda p_j, \;\; \forall j \in [m]\\\\
+
+& \;\;\;\;\;\;\; \delta_j \geq 0, \;\; \forall j \in [m]\\\\
+
+& \;\;\;\;\;\;\; \alpha_c \geq 0, \;\; \forall c \in C\\\\
+\end{align*}
+$$
+
+Here, $\alpha$ and $\delta$ are the dual variables for the first and the second sets of constraints in the primal, respectively.
+</div>
 
 **ON GOING...**
