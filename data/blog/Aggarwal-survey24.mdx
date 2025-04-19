@@ -15,7 +15,9 @@ bibliography: references-data.bib
 
 This notion of a <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>query</span> is not explicitly defined in the paper, though it comes up multiple times. My understanding is that, a query can be a search query that a user provides (like Google, Instagram). Nevertheless, it could generally be any event where ads are eligible to be shown. As a result, each query (or ad opportunity) triggers its own auction, with slots for multiple ads.
 
-As of reading this paper, it is unclear to me an auction is defined at what level. Is it per-query, or a bundle of queries (where each query has a bundle of slots)?
+As of reading this paper, it is unclear to me an auction is defined at what level. Is it per-query, or a bundle of queries (where each query has a bundle of slots)? - [04/17/2025]
+
+**Answer.** [02:23PM - 04/19/2025]:This paper [Aggarwal, Varadaraja, Mehta - WINE19](https://research.google/pubs/autobidding-with-constraints/) gives an answer. It is indeed that there is an auction for each query, and each query has a bundle of slots.
 
 ## The setting
 
@@ -171,7 +173,7 @@ $$
 $$
 </div>
 
-Here $C$ is a set of parameters that captures different variants of Budget and RoS constraints. One example can be $C = \{c_1, c_2\}$ where $B_i^{c_1} = B_i$, $w_{ij}^{c_1} = 0$ (i.e., the budget constrain) and $B_i^{c_2} = 0$, $w_{ij}^{c_2} = \tau_i v_{ij}$ (i.e., the RoS constraint).
+Here $C$ is a set of parameters that captures different variants of Budget and RoS constraints. One example can be $C = \{c_1, c_2\}$ where $B_i^{c_1} = B_i$, $w_{ij}^{c_1} = 0$ (i.e., the budget constrain) and $B_i^{c_2} = 0$, $w_{ij}^{c_2} = 1/\tau_i \cdot v_{ij}$ (i.e., the RoS constraint).
 
 One can verify that the dual is as follows:
 
@@ -193,4 +195,41 @@ $$
 Here, $\alpha$ and $\delta$ are the dual variables for the first and the second sets of constraints in the primal, respectively.
 </div>
 
-**ON GOING...**
+For truthful auctions, assuming that the optimal values of the dual variables $\alpha_c$ are known, they following bidding formula always lead to an auction outcome that incurs an optimal primal solution:
+
+$$
+b_{ij} = \frac{v_{ij} + \sum_{c \in C} \alpha_c w_{ij}^c}{\lambda + \sum_{c \in C} \alpha_c}
+$$
+
+Variants of the above bidding formula can be derived for different types of bidders. Let $\alpha_B$ and $\alpha_R$ be the optimal dual variables for the budget and RoS constraints, respectively.
+
+1. **Value-maximization** ($\lambda = 0$): 
+
+$$ 
+\left(\frac{1 + \alpha_R \cdot 1/\tau_i}{\alpha_B + \alpha_R}\right) \cdot v_{ij}
+$$
+
+2. **Value-maximization without Budget**:
+
+$$
+\left( \frac{1}{\alpha_R} + \frac{1}{\tau_i} \right) \cdot v_{ij}
+$$
+
+3. **Utility-maximization without RoS** ($\lambda = 1$): 
+
+$$
+\frac{1}{1 + \alpha_B} \cdot v_{ij}
+$$
+
+> The bid formula depends on the knowledge of the optimal duals; in practice these can be estimated via ML techniques from past data, and updated via control loops.
+
+#### Online setting
+
+There is an active line of work on online bidding algorithms, where the input models and be stochastic or adversarial; the auctions can be truthful or un-truthful. See page 7 to 9 of the paper for a survey of the literature.
+
+### Rest of the paper
+The authors then provided a detailed summary of $(i)$ efficiency of different solution concepts; $(ii)$ convergence; $(iii)$ optimal auction design.
+
+## Multi-channel settings
+
+Channels can be coming from the same platform (e.g., Google, Facebook) or different platforms. Here, one can study either bidding problems or auction design problems. This is an interesting setting. I want to work on one such problems.
