@@ -1,0 +1,62 @@
+---
+title: 'Notes on Roughgarden AGT Lecture - 2'
+date: 2025-04-27
+lastmod: '2025-04-27'
+tags: ['Lecture-Note', 'Game-Theory', 'Roughgarden']
+draft: false
+summary: 'Lecture 2 of Algorithmic Game Theory by Tim Roughgarden'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Lecture link](https://www.youtube.com/watch?v=z1QZqYuiGa8&t=1129s&ab_channel=TimRoughgardenLectures)
+
+### Simple single-item sealed-bid first/second-price auctions
+
+1. There is a single item for sale.
+
+2. Each bidder $i$ has a private valuation $v_i$ for the item.
+    - The valuation is the maximum amount of money that $i$ is willing to pay for the item.
+
+3. Each bidder has a quasilinear utility function:
+    - If $i$ wins, $u_i = v_i - p_i$;$p_i$ is the price that bidder $i$ pays. 
+    - If $i$ does not win, $u_i = 0$.
+
+4. The bids are submitted privately to the auctioneer, who then determines the winner and the price. 
+
+5. The auction can be first-price or second-price.
+
+In first-price auctions, one does not want to bids its true valuation, as it always results in a zero utility. Instead, the bid amount depends on others' bids. On the other hand, in the second-price auction, the (weakly) dominant strategy for a players is to simply bid its true valuation. 
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Claim 1.** In a seal-bid second-price auction, bidding the valuation is a dominant strategy.
+</div>
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+Fix a player $i$ and $b_{-i}$; let $b^*$ be the maximum of $b_{-i}$. If $v_i < b^*$, then bidding $v_i$ results in a zero utility (as $i$ loses). Nevertheless, any other bid that results in $i$ winning implies a payment of $b^* > v_i$, and thus a negative utility.
+
+If $v_i \geq b^*$, then bidding $v_i$ results in a utility of $v_i - b^*$ which is at least as good as not winning. 
+<span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+One can also observe that truth telling in a second-price auction never gives a negative utility, regardless of the bids of others. 
+
+Overall, second-price auctions have the following desirable properties:
+
+1. <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>dominant-strategy incentive-compatible(DSIC)</span> - 
+telling the truth is a dominant strategy for all players (and the utility is always non-negative).
+
+2. Can be implemented efficiently. 
+
+3. If bidders are truthful, then the auction maximizes the valuation of the outcome (social surplus).
+
+#### Remark 
+
+Note that in a standard second-price auction, the second-highest bid equals to the highest bid if there is a tie. However, if we change the rule to paying the second-highest bid that is **strictly less** than the highest bid (for now, lets assume there are always at least two distinct bids), then bidding own valuation is no longer a dominant strategy, as overbidding sometimes helps. 
+
+For instance, fix $i$, and suppose $v_i$ lies between $b^*$ and $b'$, where $b'$ is the second-highest bid in $b_{-i}$ that is strictly less than $b^*$. Then, bidding $b^*$ gives a non-zero expected utility for $i$ (randomness comes from tie breaking).
+
+See page $5$ of the [lecture note](https://timroughgarden.org/f13/l/l2.pdf) for an example of ads auctions. 
+
+> Step 1: Assume, without justification, that bidders bid truthfully. Then, how should we assign bidders to slots so that the above properties (2) and (3) hold? Step 2: Given our answer to Step 1, how should we set selling prices so that the above property (1) holds?

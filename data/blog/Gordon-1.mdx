@@ -1,0 +1,92 @@
+---
+title: 'Notes on Gordon Lecture - 1'
+date: 2025-04-24
+lastmod: '2025-04-24'
+tags: ['Lecture-Note', 'Optimization', 'Gordon']
+draft: false
+summary: 'Lecture 1 of Optimization by Geoff Gordon and Ryan Tibshirani'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Lecture link](https://www.youtube.com/watch?v=9hToSoZXM9s&list=PL7y-1rk2cCsDOv91McLOnV4kExFfTB7dU&ab_channel=GeoffGordon)
+
+
+### An example 
+
+1. $m$ agents, $n$ goods; $i$, $j$ are indices for agents and goods, respectively.
+
+2. Variables: $p_i \in \mathbb{R}^n$ for production, and $c_i \in \mathbb{R}^n$ for consumption.
+
+3. Functions: $d_i(c_i)$ for utility of consumption ($d$ for demand), and $s_i(p_i)$ for cost of production ($s$ for supply). 
+
+
+<div style={{ border: "1px solid white", padding: "10px", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)", textAlign: "center"}}>
+$\max{}_{p_i, c_i} \sum_{i} d_i(c_i) - s_i(p_i)$ 
+
+s.t. $\sum_{i} p_i = \sum_{i} c_i$ (i.e., the market clears)
+</div>
+
+The above program would be easier to solve if one can optimize each agent's $c_i$ and $p_i$ independently. Nevertheless, this is generally not the case due to the violation of clearing constraint. Here, we note that the maximum objective of optimizing each agent's $c_i$ and $p_i$ independently, while ignoring the clearing constraint, is always an <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>upper bound</span> for the optimal solution to the original problem. 
+
+**Competitive equilibria**. One wants to twist the program, such that:
+1. We optimize each agent's objective independently without caring about the clearing constraint.
+
+2. The clearing constraint is still somehow satisfied.
+
+To do this, one can introduce a notion of <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>price</span> $\lambda_j$ for each item $j \in [n]$. Note that such a $\lambda_j$ is *not* a variable to optimize by our program. 
+
+Given an instance of vector $\lambda$, consider the following new optimization problem:
+
+<div style={{ border: "1px solid white", padding: "10px", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)", textAlign: "center"}}>
+
+**Program 2**.
+
+$\sum_{i} \max{}_{p_i, c_i} \left( d_i(c_i) - \lambda \cdot c_i \right) - \left( s_i(p_i) - \lambda \cdot p_i \right)$ 
+</div>
+
+where $\cdot$ denotes the dot product. This program optimizes each agent's objective independently. Nevertheless, it is not immediately clear that solving program 2 gives an optimal solution to the original program. 
+
+The key is that, assuming goods are divisible, there always exists a $\lambda^{*}_j$ for each item $j \in [n]$, such that, when given the resulting vector $\lambda^{*}$ (bundle of prices), the optimal solution to program 2 satisfies the clearing constraint. To intuitively see this, consider the overall supply and demand (multi-variable) functions, where the inputs to each function is $\lambda$, and the outputs are accumulated production and consumption obtained by solving program 2 under $\lambda$. A clearing price vector is $\lambda^{*}$ is obtained where these two curves intersect. This $\lambda^{*}$ is often referred to as a <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>Walrasian equilibrium</span>.
+
+Now, suppose we have such a vector $\lambda^{*}$ given, let $c_i^{*}$ and $p_i^{*}$ be the optimal solutions to program 2 for each $i \in [m]$. We know that the clearing constraint is satisfied, i.e., $\sum_{i} c_i^{*} = \sum_{i} p_i^{*}$. Thus, the objective value of program 2 can be rewritten as:
+
+$$
+\begin{align*}
+\sum_{i} \left( d_i(c_i^*) - \lambda \cdot c_i^* \right) - \left( s_i(p_i^*) - \lambda \cdot p_i^* \right) &= \sum_{i} \left( d_i(c_i^*) - s_i(p_i^*) \right) - \sum_{i} \left( \lambda \cdot c_i^* - \lambda \cdot p_i^* \right)\\
+&= \sum_{i} \left( d_i(c_i^*) - s_i(p_i^*) \right) - \lambda \cdot \sum_{i} \left( c_i^* - p_i^* \right)\\
+&= \sum_{i} \left( d_i(c_i^*) - s_i(p_i^*) \right)
+\end{align*}
+$$
+
+As a result, under $\lambda^{*}$, an optimal solution of program 2 is also an optimal solution to the original program. 
+
+#### To find a $\lambda^{*}$
+One possible way is to use the tatonnement algorithm, which incrementally adjust $\lambda$ (based on a learning rate) until the market clears. The algorithm can be stated as follows: 
+
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+
+1. Initialize $\lambda$ to some arbitrary value, say all zeros.
+
+2. Repeat the following steps ($k$ denotes iteration index) until $|\sum_{i} c_i - \sum_{i} p_i| \leq \epsilon$:
+
+   1. Solve program 2 under $\lambda$.
+   2. $\lambda = \lambda + \ell_k (\sum_{i} c_i - \sum_{i} p_i)$, where $\ell_k$ is a learning rate.
+
+3. Return $\lambda$.
+</div>
+
+**Remark.** The above algorithm is not guaranteed to reach a equilibria [Ackerman,  Journal of economic methodology, 2002]. 
+
+## A common form of optimization 
+
+1. Objective function: $\min_x f(x)$
+
+2. Inequality constraints: $g_i(x) \leq 0$ for $i \in [m]$ 
+
+3. Equality constraints: $h_j(x) = 0$ for $j \in [n]$
+
+4. Variables: $x \in \mathbb{H}^d$ for some set $\mathbb{H}$. 
+
+The rest of the lecture is a brief overview of other examples of optimization problems, see [here](https://youtu.be/9hToSoZXM9s?list=PL7y-1rk2cCsDOv91McLOnV4kExFfTB7dU&t=2236).
