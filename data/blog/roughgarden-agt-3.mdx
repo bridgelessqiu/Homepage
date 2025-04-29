@@ -1,0 +1,135 @@
+---
+title: 'Notes on Roughgarden AGT Lecture - 3'
+date: 2025-04-27
+lastmod: '2025-04-27'
+tags: ['Lecture-Note', 'Game-Theory', 'Roughgarden']
+draft: false
+summary: 'Lecture 3 of Algorithmic Game Theory by Tim Roughgarden'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Lecture link](https://www.youtube.com/watch?v=9qZwchMuslk&list=PLEGCF-WLh2RJBqmxvZ0_ie-mleCFhi2N4&index=3&ab_channel=TimRoughgardenLectures)
+
+### The properties of a desirable auction
+
+1. DSIC (dominant-strategy incentive compatible) - bidding valuation is a dominant strategy for all players. 
+    - IR (individual rationality) - the expected utility of each player is non-negative. Formally, the payment is never more than the valuation received for a player.
+    - Such an auction is easy to play for bidders, and auctioneers can predict the outcome.
+
+2. Assuming bidding truthfully, social surplus $\sum_{j} \sum_{i} v_i x_i$ is maximized. 
+
+3. The auction can be implemented in polynomial time. 
+
+### The single-parameter setting 
+
+1. A set of $n$ bidders. 
+
+2. A feasible allocation set $X$. Each element in $X$ is a $n$-vector $(x_1, ..., x_n)$, where $x_i$ is the amount of good received by bidder $i$.
+
+    - In the case of single-item auction, $X$ is a set of binary vectors where $x_i \in \{0, 1\}$ and $\sum_{i} x_i \leq 1$. 
+
+    - In an auction with $k$ identical items, $X$ is a set of $n$-vectors where $x_i \in \{0, 1, ..., k\}$ and $\sum_{i} x_i \leq k$.
+
+    - In the case of selling a bundle of ads slots (the example presented in the lecture) in an auction, $X$ is a set where $x_i$ is the CTR of the ad slot received by bidder $i$.
+
+### Allocation and payment rules
+
+1. Allocation rule - determines who get how much of the good based on the bids. Formally, such as rule is a function $x(b) : \mathbb{R}^n \rightarrow X$, where $b$ is the vector of bids. Function $x$ determines the allocation of goods to bidders, after seeing their bids. 
+
+2. Payment rule - determines how much each bidder pays based on the bids. Formally, such as rule is a function $p(b) : \mathbb{R}^n \rightarrow \mathbb{R}^n$. 
+
+    - An example. In the seal-bid second price auction, the allocation rule $x$ outputs a 0-1 vector, where $x_i(b) = 1$ iff bidder $i$ bids the highest (say, we break tie deterministically). The payment rule $p$ outputs a vector where $p_i(b)$ is the second highest bid for the winner $i$ and $p_i(b) = 0$ for all other bidders.
+
+    **Note.** It seems to me that, the payment rule should first call the allocation function to determine the winner, and then output the payment for the winner. For now, I will assume this is the case. 
+
+
+<span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>In this note, we continue working with quasilinear utility</span>: $u_i(b) = v_i x_i(b) - p_i(b)$, further, to ensure IR, we assume $p_i(b) \in [0, b_i x_i(b)]$ for all $i$. 
+
+### Myerson's Lemma 
+
+An allocation rule $x$ for a single-parameter environment is <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>implementable</span> if there is a payment rule $p$ such the sealed-bid auction $(x, p)$ is DSIC.
+
+
+An allocation rule $x$ for a single-parameter environment is <span style={{ backgroundColor: "#5A7D5A", color: "black", padding: "2px 6px", borderRadius: "4px", boxShadow: "1px 1px 1px rgba(0, 0, 0, 0.4)"}}>monotone</span> if for every bidder $i$ and bids $b_{-i}$, the allocation $x_i(z, b_{-i})$ is non-decreasing in its bid $z$. That is, bidding higher never leads to a lower allocation.
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Theorem 1. (Myerson's Lemma)** Fix a single-parameter environment, an allocation rule $x$ is implementable if and only if it is monotone. Further, the payment rule that implements $x$ (if it is monotone) is unique, assuming $p_i(b) = 0$ if $b_i = 0$. 
+</div>
+
+The explicit form of the payment rule is given in the proof below. 
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+
+Consider an allocation rule $x$. Suppose there is a payment rule $p$ that implements $x$. We now show that $x$ is monotone. Fix a player $i$ and a vector $b_{-i}$. We use $x(z)$ and $p(z)$ to denote $x_i(z, b_{-i})$ and $p_i(z, b_{-i})$, respectively. 
+
+Fix any two values $y$ and $z$ such that $0 \leq y < z$. If $z$ is the valuation of $i$, then DSIC gives that
+
+$$
+\begin{align}
+z \cdot x(z) - p(z) \geq z \cdot x(y) - p(y)
+\end{align}
+$$
+
+On the other hand, if $y$ is the valuation of $i$, then by DISC:
+
+$$
+\begin{align}
+y \cdot x(y) - p(y) \geq y \cdot x(z) - p(z)
+\end{align}
+$$
+
+Rearranging the above inequalities gives:
+
+$$
+\begin{align}
+y \cdot \left( x(z) - x(y) \right) \leq p(z) - p(y) \leq z \cdot \left( x(z) - x(y) \right)
+\end{align}
+$$
+
+Now, since $z > y$, $z \cdot \left( x(z) - x(y) \right) \geq y \cdot \left( x(z) - x(y) \right)$ implies that $x(z) - x(y) \geq 0$. Thus, $x$ is monotone.
+
+**Note.** This argument also implies that $p$ (that implements $x$) is monotone w.r.t. each bid. 
+
+For the other direction, suppose $x$ is monotone. The payment rule $p$ can be derived with some basic calculus. Suppose $x$ is differentiable (If not, a piece-wise version of the payment rule can be derived.). One can divide all components of Ineq (3) by $z - y$, and take the limit as $y \rightarrow z$. This gives:
+
+$$
+p'(z) = z \cdot x'(z)
+$$
+
+Integrate both size from $0$ to $b_i$, we get:
+
+$$
+p(b_i) = \int_{0}^{b_i} z \cdot \frac{d}{dz} x_i(z, b_{-i}) \; dz
+$$
+
+To show that this payment rule implements $x$, simply observe that $z \cdot x(z) - p(z) = \int_{0}^{z} x(t) \; dt$ (integration by parts). In other words, $p(z) = \int_{0}^{z} t x'(t) \; dt$ is the **area above the curve** $x(t)$ for $t$ from $0$ to $z$, capped by the line $x(z)$. Based on this observation, one can either do formal derivation or prove by pictures to show that Ineq (1) and (2) hold. <span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+#### Examples of the payment rule
+
+1. **Vickrey**. Consider a single-item auction where the highest bid wins. This is the allocation rule. Now, fix $i$ and $b_{-i}$; let $B$ be the max in $b_{-i})$. Consider the curve $x_i(\cdot, b_{-i})$, which is a step function with value $0$ upto $B$, and $1$ after that. If $b_i < B$, then $p_i(b_i) = 0$, otherwise, $p_i(b_i) = B$ (the breakpoint). 
+
+
+2. **Ads**. Suppose we sort the $k$ slots by their CTR, $\alpha_1 \geq \alpha_2 \geq ... \geq \alpha_k$. We also sort the bids from $n$ bidders, $b_1 \geq b_2 \geq ... \geq b_n$. The allocation rule is to give the slot with the $j$th highest CTR to the $j$th highest bidder. 
+
+    Recall that the allocation function $x(b_i, b_{-i})$ outputs the CTR of the slot received by bidder $i$. Thus, this rule is monotone. Further, it is not hard to see that this allocation rule also maximizes social surplus.
+
+    One can easily verify that the payment rule derived from Myerson's Lemma is of the form:
+
+    $$
+        p_i(b) = \sum_{j=i}^k b_{j+1} \cdot (\alpha_j - \alpha_{j+1})
+    $$
+
+    Where $b_{k+1} = 0$. This can be seen as a piece-wise step function, where each breakpoint is at a $b_j$, and the jump amount is the different between two adjacent CTRs in the sorted order. 
+
+    As noted in the lecture, sometime the payment of $i$ (obtained above) is divided by the CTR $\alpha_i$ of the slot received by $i$. This gives us the **per-click payment**. The intuition is that, auctioneers usually only gets paid when user clicks on the ad, as advertisers sometimes only care about the clicks rather than the impressions. Thus, an auctioneer increases the payment by a factor of $1/\alpha_i$ to still receive $p_i(b)$ expected payment. 
+
+    The above extension gives a new view of the payment:
+
+    $$
+        p_i(b) = \sum_{j=i}^k b_{j+1} \cdot \frac{\alpha_{j} - \alpha_{j+1}}{\alpha_i}
+    $$
+
+    It is not hard to see that $\sum_{j=i}^k \alpha_{j} - \alpha_{j+1} = \alpha_i$ (recall that $\alpha_{k+1} = 0$). Thus, this payment rule can be viewed as a convex combination of the lower bids.
