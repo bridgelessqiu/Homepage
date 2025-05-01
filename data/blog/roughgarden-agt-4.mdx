@@ -1,0 +1,135 @@
+---
+title: 'Notes on Roughgarden AGT Lecture - 4'
+date: 2025-04-30
+lastmod: '2025-04-30'
+tags: ['Lecture-Note', 'Game-Theory', 'Roughgarden']
+draft: false
+summary: 'Lecture 4 of Algorithmic Game Theory by Tim Roughgarden'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Lecture link](https://www.youtube.com/watch?v=BMoSLmuJsak&list=PLEGCF-WLh2RJBqmxvZ0_ie-mleCFhi2N4&index=4&ab_channel=TimRoughgardenLectures)
+
+
+### Knapsack setting 
+
+1. Single-parameter environment. 
+
+2. $n$ bidders, each with a weight $w_i$ and a valuation $v_i$.
+
+3. The seller with a capacity $W$. 
+
+4. The feasible allocation set $X$ is the set of $0$-$1$ vector where $\sum_{i} x_i w_i \leq W$ for all $x \in X$. 
+
+An example of this setting is TV ads bidding for a (long) commercial break. Each ads has it own duration (weight $w_i$), and $W$ is the total length of the break. 
+
+### A mechanism for Knapsack auction 
+
+Recall that an ideal mechanism satisfies the following:
+
+1. DSIC: Bidding valuation is a dominant strategy (and IR: utility is never negative).
+
+2. Maximized social surplus: $\sum_{i} x_i v_i$
+
+3. The auction runs in polynomial time. 
+
+#### Allocation rule
+
+First, assuming (1) holds, we want an allocation rule that maximizes social surplus. Observe that, any allocation rule
+
+$$
+x(b) = \argmax_{x \in X} b_i x_i
+$$
+
+solves the underlying knapsack problem. Thus, no surplus-maximizing allocation rule is efficient (unless P = NP). It follows that an ideal mechanism that satisfies all three properties simultaneously does not exist, unless P = NP. 
+
+#### Payment rule
+
+Note that the allocation rule above is monotone. By Myerson's Lemma, (in our single-parameter setting) there is a payment rule that implements it. Fix a player $i$ and $b_{-i}$, it is not hard to see that $x_i(\cdot, b_{-i})$ is a step function w.r.t. $b_i$, with only one break point $z$, moving the allocation $x_i(b)$ from $0$ to $1$. Thus, if $b_i \leq z$, the payment is $0$, otherwise, the payment is $z$. 
+
+Note that finding such a $z$ given $w_i$ and $b_{-i}$ involves solving another instance of knapsack. Thus, the payment function itself cannot be computed in polynomial time, unless P = NP. 
+
+**Note.** Note that Myerson's Lemma does not concerns running time nor surplus guarantee. It only says that, if an allocation rule is monotone, there is a payment rule that implements it (i.e., DSIC).  
+
+### Approximated solutions
+
+> The dominant paradigm in algorithmic mechanism design is to relax the second constraint (optimal surplus) as little as possible, subject to the first (DSIC) and third (polynomial-time) constraints. For single parameter environments, Myerson’s Lemma implies that the following goal is equivalent: design a polynomial-time and monotone allocation rule that comes as close as possible to maximizing the social surplus.
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+    **Question. [10:26AM - 04/30/2025]**  
+    
+    Why the following goal:
+    
+    > Design a polynomial-time and monotone allocation rule that comes as close as possible to maximizing the social surplus.
+
+    is equivalent to finding a mechanism that is DISC, **efficient**, and approximate the surplus.
+
+    My main question is the efficiency: why a poly-time allocation rule implies its implementing payment rule is also poly-time? For instance, consider a monotone piece-wise step allocation function that is efficient, it is possible that the breakpoints are hard to compute?
+
+    My current intuition is that if the allocation rule $x$ is efficient (suppose $x(\cdot, b_{-i})$ is a piece-wise step function), to find all breakpoints that come before a bid $b_i$ (fixing ($b_{-i}$)), one can do binary search over $[0, b_i]$. 
+</div>
+
+Overall, the problem becomes designing an allocation algorithm that approximate the optimal surplus, where the algorithm should be monotone w.r.t each bid (while other bids are fixed).
+
+> Myerson's Lemma implies that algorithmic mechanism design boils down to algorithm design in an oddly restricted (via monotonicity) “computational model” — the entire game-theoretic aspect of the design goal is neatly compiled into a relatively intuitive extra constraint on the allocation rule.
+
+
+> It should be clear what the holy grail in algorithmic mechanism design is: for as many NP-hard problems of interest as possible, to match the best-known approximation guarantee for (not necessarily monotone) approximate surplus maximization algorithms — or even the best-possible approximation guarantee, subject to $P \neq NP$ . That is, we would like the DSIC/monotone constraint to cause no additional surplus loss, beyond the loss we already have to suffer due to the polynomial-time constraint.
+
+**Remark.** An allocation rule that maximizes social surplus must be monotone, thus implemented by a payment rule.
+
+### An allocation rule that approximate social surplus 
+
+Consider the following allocation algorithm:
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+
+**Algorithm 1.** Given a bid vector $\vec{b}$, weight vector $\vec{w}$, and total capacity $W$. 
+
+
+1. Sort bidders by $\vec{b}_i / \vec{w}_i$ (i.e., bang-per-buck) in non-descending order. Let $\Pi$ be the new order of bidders.
+
+2. Select bidders (i.e. set $x_i = 1$) in this order $\Pi$ until violating $W$
+
+    - Note that we should skip bidders if its weight is too high and move to the next succeeding bidder under $\Pi$.
+
+    - Let $N'$ be the resulting set of selected bidders.
+
+3. Let $obj(N')$ denote the surplus in $V$ (i.e., the sum of the bids over bidders in $N'$.)
+
+4. Return $\max{} \{b^*, q \}$, where $b^*$ is the highest bid in $\vec{b}$.
+</div>
+
+I think that the argument of the approximation guarantee (presented below) is not exactly the same as the one in the Prof. Roughgarden's lecture (where in our argument, we use the fact that the creation of $N'$ is maximal. TBH, I didn't really read the proof in the lecture note. As this $2$-approximation is quite standard, any proof works), but the ideas should be almost the same.
+
+<div style={{ border: "1px", padding: "10px", backgroundColor: "#142841", boxShadow: "1.5px 1.5px 1.5px rgba(0, 0, 0, 0.5)"}}>
+**Theorem 1.**  Algorithm 1 is monotone, and it gives a $2$-approximation of the optimal social surplus. 
+</div>
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+
+It is clear that when the weights are fixed, one can only improve its ranking in the ordering (in step 2) if its bid amount increases, thus monotone. 
+
+We now establish the $2$-approximation guarantee. Given an instance $\left< \vec{b}, \vec{w}, W\right>$ of the problem, let $OPT$ denote the largest surplus over all feasible solutions. 
+
+We first consider two cases where $2$-approximation easily follows.
+
+1. If $b^* = \max(\vec{b}) \geq (1/2) \cdot OPT$, then $2$-approximation (see step $4$ of the algorithm).
+
+Recall that $N'$ is the set of bidders selected in step $2$. Let $W(N')$ be the sum of weights over bidders in $N'$. Note that bidders in $N'$ together offers the highest bang-per-buck for any selection of bidders with a total capacity $W(N')$. 
+
+2. If $W(N') \geq (1/2) \cdot W$, then for any solution, even in the case where the full capacity $W$ is used, the resulting social surplus is at most $2 \cdot obj(N')$. Thus $2$-approximation.
+
+Now, consider the remaining case where $b^* < (1/2) \cdot OPT$, and $W(N') < (1/2) \cdot W$. 
+
+Since no bidders in $N \setminus N'$ can be added to $N'$ without violating the capacity constraint (w.l.o.g., we assume that $N \setminus N'$ is non-empty, otherwise, the algorithm finds an optimal solution.), all bidders in $N \setminus N'$ have capacity strictly larger than $(1/2) \cdot W$. This implies that, in any feasible solution, the number of bidders selected from the set $N \setminus N'$ is at most one, where the rest (if any) of the selected bidders must from $N'$. Thus, $obj(N')$ is at most off by the largest bid over bidders in $N \setminus N'$, which is at most $b^* < (1/2) \cdot OPT$. This concludes the proof.
+<span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+#### Remark 
+
+There is a well known PTAS for knapsack based on a simple re-valuation idea, but its original form is not monotone.
+
+**On going...**
