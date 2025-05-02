@@ -110,3 +110,19 @@ export function Bluesky(svgProps: SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+export function GoogleScholar(svgProps: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      {...svgProps}
+    >
+      <title>Google Scholar</title>
+      <path fill="#4285F4" d="M24 4L0 20l24 16 24-16L24 4z" />
+      <path fill="#34A853" d="M24 44v-9.6l-12-8V36z" />
+      <path fill="#FBBC05" d="M24 44v-9.6l12-8V36z" />
+      <path fill="#EA4335" d="M12 26l12 8 12-8-12-8z" />
+    </svg>
+  )
+}

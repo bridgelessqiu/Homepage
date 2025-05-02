@@ -130,6 +130,32 @@ Since no bidders in $N \setminus N'$ can be added to $N'$ without violating the 
 
 #### Remark 
 
-There is a well known PTAS for knapsack based on a simple re-valuation idea, but its original form is not monotone.
+There is a well known PTAS for knapsack based on a simple re-valuation idea; its original form is not monotone.
 
-**On going...**
+> Consider an NP-hard optimization problem, check if the state-of-the-art approximation algorithm directly leads to a DSIC mechanism and, if not, tweak it or design a new approximation algorithm that does, hopefully without degrading the approximation guarantee.
+
+Not all NP-hard problem fit into the context of auction mechanism, right? Say, vertex cover, what is the notion of bid in this case?
+
+### Black-Box Reductions
+
+Is there a natural single-parameter problem where the best poly-time approximation guarantee is strictly worsened when we have the monotone constraint on the algorithm? 
+
+This topic on black-box reductions (instead of doing case-by-case, we have a general reduction that transforms a non-monotone polynomial-time algorithm and into a monotone poly-time algorithm, without degrading the approximation ratio by too much.) is very interesting. 
+
+### Revelation principle
+
+The revelation principle says that, if there is a mechanism $M$ where each player has a dominant strategy, regardless of their private valuations, then **there exists** a mechanism $M'$ derived from $M$ which is DSIC. 
+
+<div style={{borderLeft: "1px solid white", padding: "10px"}}>
+**Proof sketch.**
+
+**Note.** A dominant strategy of $i$ can be viewed as the output of a function $s_i(v_i)$, where the input is the valuation (e.g., bidding twice the valuation). 
+
+Given the set of $n$ bidders with private valuation $v_i$, let $s_i(v_i)$ be the dominant strategy of $i$ under the mechanism $M$, $i \in [n]$. That is, under $M$, $s_i(v_i)$ is the bid that $v_i$ would submit using its dominant strategy. 
+
+Consider another mechanism $M'$, where $M'$ takes a bid $b_i$ from each $i$, submit $b = (s_1(b_1), ..., s_n(b_n))$ to $M$, and let $M$ do the rest. 
+<span style={{ fontSize: "20px"}}>∎</span>
+</div>
+
+#### Remark 
+Note that the above is an existence proof (i.e., there exists a $M'$ that somehow knows $s_i$ for all players).

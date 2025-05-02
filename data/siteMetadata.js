@@ -12,6 +12,7 @@ const siteMetadata = {
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   email: 'zqgraph@gmail.com',
   github: 'https://github.com/bridgelessqiu',
+  scholar: 'https://scholar.google.fi/citations?user=tf3t9UwAAAAJ',
   // twitter: 'https://twitter.com/Twitter',
   linkedin: 'https://www.linkedin.com/in/zirouq/',
   locale: 'en-US',

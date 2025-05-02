@@ -11,6 +11,7 @@ import {
   Instagram,
   Medium,
   Bluesky,
+  GoogleScholar
 } from './icons'
 
 const components = {
@@ -26,6 +27,7 @@ const components = {
   instagram: Instagram,
   medium: Medium,
   bluesky: Bluesky,
+  scholar: GoogleScholar
 }
 
 type SocialIconProps = {
