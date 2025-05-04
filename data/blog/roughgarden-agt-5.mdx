@@ -1,0 +1,73 @@
+---
+title: 'Notes on Roughgarden AGT Lecture - 5'
+date: 2025-05-02
+lastmod: '2025-05-02'
+tags: ['Lecture-Note', 'Game-Theory', 'Roughgarden']
+draft: false
+summary: 'Lecture 5 of Algorithmic Game Theory by Tim Roughgarden'
+layout: PostSimple
+bibliography: references-data.bib
+---
+
+[Lecture link](https://www.youtube.com/watch?v=jQsAoMcxlIo&list=PLEGCF-WLh2RJBqmxvZ0_ie-mleCFhi2N4&index=6&ab_channel=TimRoughgardenLectures)
+
+
+## Revenue-maximizing Auctions 
+
+In an single-parameter environment, recall that an allocation rule that maximizes social welfare (i..e, social surplus) must be monotone, thus implemented by a (unique) payment rule. It follows that, given an instance of a single-parameter environment, a set of players and their (private) valuations, there always exists a DSIC mechanism where a dominant-strategy equilibrium maximizes the social welfare among all possible (deterministic) allocations.
+
+### A Bayesian setting 
+
+1. A single parameter environment.
+
+2. For each bidder $i$, its valuation $v_i$ is drawn independently from a distribution $F_i$, with density function $f_i$, and support in $[0, v_{\text{max}}]$ for some global $v_{\text{max}}$.
+
+    - $F_1, ..., F_n$ need not to be identical. 
+
+    - The distributions are known by the auctioneers. In practice, they come from past data such as history of bids.
+
+    - We focus on DISC mechanism to maximizes the revenue. Since each player has a dominant strategy regardless of what other players do, one may assume that players does not know the distributions $F_1, ..., F_n$.
+
+#### Revenue maximization
+
+Given an instance of the above setting, find a DISC auction where the expected revenue (randomness comes from the joint distributions of the valuations) is maximized over all DISC auctions.
+
+#### Examples
+
+1. Single-item single-bidder auction. Here, a DISC auction would be the seller posting a price $r$, and bidder wins (any pays $r$) if and only if its valuation $v \geq r$. 
+
+    - The expected revenue of this mechanism is $r \cdot (1 - F(r))$. 
+
+    - If $F$ is the uniform distribution on $[0, 1]$, then the optimal posted price (called monopoly price) that maximizes the expected revenue is $1/2$, with expected revenue $1/4$.
+
+2. For a single-item auction with two bidders. One can do Vickrey, in this case, the expected revenue is the the expected value of the smaller bid. 
+
+    - Suppose the both $F_1$ and $F_2$ is uniform over $[0, 1]$. Let $z = \min\{v_1, v_2\}$ be the r.v. of the smaller bid. We then have:
+
+    $$
+    \mathbb{E}[z]_{\sim F_1 \times F_2} = \int_{0}^{1} Pr[z \geq t] \; dt = \int_{0}^{1} (1 - t)^2 \; dt = \frac{1}{3}
+    $$
+
+    where the event $z \geq t$ occurs if and only if both $v_1 \geq t$ and $v_2 \geq t$, which occurs w.p. $(1 - t)^2$.
+
+
+### Reserve price 
+
+A reserve price for an item is the minimum value a seller is will to sell an item. In the case of a Vickrey auction, having a reserve price $r$ modifies the mechanism as follows:
+
+1. If all bids are less than $r$, then there is no winner and item not sold.
+
+2. The winner pays the second-highest bid or $r$, whichever is larger.
+
+I find it helpful to view a Vickrey with a reserve price $r$ as a standard Vickrey with a shill bid $r$.
+
+In the case of Vickrey with $r$ introduced. To compute the expected revenue. One can consider three exhaustive cases. For simplicity, let $x$ and $y$ be the valuations.
+
+1. Both $x$ and $y$ less than $r$: expectation is $0$.
+
+2. One and only one less than $r$, expectation is $2 \cdot \int_{0}^{r} \int_{r}^{1} r \; dx dy$
+
+3. Both at least $r$, expectation is $2 \cdot \int_{r}^{1} \int_{y}^{1} y \; dx dy$. 
+
+The final expectation is $1/3 + r^2 +(4/3) \cdot r^3$. Setting $r = 1/2$, we improve the expectation revenue from $1/4$ (where no reserve price presented) to $5/12$. 
+
